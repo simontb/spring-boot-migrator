@@ -447,7 +447,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_implement_actions">Implement Actions</h3>
 <div class="paragraph">
 <p>First step on your journey to implement a new recipe will be the implementation of an <code>Action</code>.
-Every</p>
+Every Action that needs access to the ProjectContext to modify resources should extend <code>AbstractAction</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">class MyAction extends AbstractAction {
+    void apply(ProjectContext context) {
+        // analyse and modify AST
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Use <a href="#TestProjectContext">[TestProjectContext]</a> to test your Action.</p>
 </div>
 <div class="sect3">
 <h4 id="_display_progress">Display Progress</h4>
@@ -493,13 +505,36 @@ If no other progress change is reported during the execution of the action, a lo
 </div>
 <div class="sect2">
 <h3 id="_creating_recipes">Creating Recipes</h3>
+<div class="paragraph">
+<p>Recipes bundle a set of Actions for a migration.
+They can be declared programmatically as Spring beans or declarative using yaml syntax.
+The main difference is that yaml recipes can be provided to SBM without code changes on startup allowing to add new,
+declarative recipes without recompilation while the bean definition is arguably easier to use.</p>
+</div>
 <div class="sect3">
 <h4 id="_declarative_recipes">Declarative recipes</h4>
-
+<div class="paragraph">
+<p>Declarative recipes must be placed under <code>src/main`resources/recipes</code>.<br>
+See <a href="{repo}/blob/main/components/sbm-support-boot/src/main/resources/recipes/initialize-spring-boot-migration.yaml" target="_blank" rel="noopener">initialize-spring-boot-migration.yaml</a> for a recipe in YAML syntax</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_recipe_beans">Recipe beans</h4>
-
+<div class="paragraph">
+<p>A recipe can be defined as Spring bean using @Bean annotated method, see <a href="{repo}/blob/main/components/sbm-recipes-mule-to-boot/src/main/java/org/springframework/sbm/mule/MigrateMuleToBoot.java" target="_blank" rel="noopener">MigrateMuleToBoot.java</a> for a recipe declared as Spring bean.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Remember to provide a description to all Actions to display the description to the user when the Action is applied.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -581,10 +616,15 @@ The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Autowired
-@JsonIgnore
-@Setter
-private Configuration configuration;</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyAction extends AbstractAction {
+
+    @Autowired
+    @JsonIgnore
+    @Setter
+    private Configuration configuration;
+
+    // ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -653,7 +693,7 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-02-28 16:49:59 UTC
+Last updated 2022-02-28 17:15:46 UTC
 </div>
 </div>
 </body>
