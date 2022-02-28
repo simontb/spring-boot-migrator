@@ -5,8 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="Fabian Krüger">
-<title>Developer Documentation</title>
+<title>Testing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,494 +435,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/styles/github.min.css">
 </head>
-<body class="article toc2 toc-left">
+<body class="article">
 <div id="header">
-<h1>Developer Documentation</h1>
-<div class="details">
-<span id="author" class="author">Fabian Krüger</span><br>
-<span id="email" class="email"><a href="mailto:fkrueger@vmware.com">fkrueger@vmware.com</a></span><br>
-<span id="revdate">2022-02-28</span>
-</div>
-<div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_getting_started">2. Getting started</a>
-<ul class="sectlevel2">
-<li><a href="#_requirements">2.1. Requirements</a></li>
-<li><a href="#_build_and_run">2.2. Build and Run</a></li>
-</ul>
-</li>
-<li><a href="#_concepts">3. Concepts</a>
-<ul class="sectlevel2">
-<li><a href="#_recipes">3.1. Recipes</a></li>
-<li><a href="#_actions">3.2. Actions</a></li>
-<li><a href="#_projectcontext">3.3. ProjectContext</a></li>
-<li><a href="#Finders">3.4. Finders</a></li>
-<li><a href="#_modules">3.5. Modules</a></li>
-</ul>
-</li>
-<li><a href="#_how_to">4. How To</a>
-<ul class="sectlevel2">
-<li><a href="#_implement_actions">4.1. Implement Actions</a>
-<ul class="sectlevel3">
-<li><a href="#_display_progress">4.1.1. Display Progress</a></li>
-</ul>
-</li>
-<li><a href="#_creating_recipes">4.2. Creating Recipes</a>
-<ul class="sectlevel3">
-<li><a href="#_declarative_recipes">4.2.1. Declarative recipes</a></li>
-<li><a href="#_recipe_beans">4.2.2. Recipe beans</a></li>
-</ul>
-</li>
-<li><a href="#_create_a_condition">4.3. Create a Condition</a></li>
-<li><a href="#_buildfile_and_dependencies">4.4. BuildFile and Dependencies</a>
-<ul class="sectlevel3">
-<li><a href="#_adding_a_dependency">4.4.1. Adding a Dependency</a></li>
-<li><a href="#_removing_a_dependency">4.4.2. Removing a Dependency</a></li>
-<li><a href="#_adding_dependency_exclusion">4.4.3. Adding Dependency Exclusion</a></li>
-</ul>
-</li>
-<li><a href="#_migrating_java_code">4.5. Migrating Java Code</a>
-<ul class="sectlevel3">
-<li><a href="#_access_all_javasources">4.5.1. Access all JavaSources</a></li>
-<li><a href="#_adding_annotations">4.5.2. Adding annotations</a></li>
-<li><a href="#_removing_annotations">4.5.3. Removing annotations</a></li>
-<li><a href="#_modifying_annotations">4.5.4. Modifying annotations</a></li>
-<li><a href="#_migrating_methods">4.5.5. Migrating Methods</a></li>
-<li><a href="#_add_a_new_javasource">4.5.6. Add a new JavaSource</a></li>
-</ul>
-</li>
-<li><a href="#_openrewrite_recipe_and_visitor">4.6. OpenRewrite Recipe and Visitor</a></li>
-<li><a href="#_use_freemarker_templates">4.7. Use Freemarker templates</a></li>
-<li><a href="#_migrate_multi_module_projects">4.8. Migrate Multi Module Projects</a>
-<ul class="sectlevel3">
-<li><a href="#_access_a_modules_javasources">4.8.1. Access a Module&#8217;s JavaSources</a></li>
-</ul>
-</li>
-<li><a href="#Specialized_Resources">4.9. Specialized Resources</a>
-<ul class="sectlevel3">
-<li><a href="#_create_a_finder_to_access_other_resources">4.9.1. Create a Finder to access other resources</a></li>
-<li><a href="#_manipulate_spring_boot_properties">4.9.2. Manipulate Spring Boot properties</a></li>
-<li><a href="#_create_a_specialized_resource">4.9.3. Create a specialized Resource</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#_testing">5. Testing</a>
-<ul class="sectlevel2">
-<li><a href="#_testprojectcontext">5.1. TestProjectContext</a></li>
-<li><a href="#_projectcontextfilesystemtestsupport">5.2. ProjectContextFileSystemTestSupport</a></li>
-<li><a href="#_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction">1. Introduction</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Spring Boot Migrator (SBM) aims to help developers migrating applications to Spring Boot, upgrade existing Boot applications or migrate an application to use Spring Boot features.<br>
-These migrations are defined as recipes consisting of one or more actions to be applied to the target application.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_getting_started">2. Getting started</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_requirements">2.1. Requirements</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Maven</p>
-</li>
-<li>
-<p>JDK 11+</p>
-</li>
-<li>
-<p>IntelliJ (other IDEs should work too)</p>
-</li>
-<li>
-<p>Docker (for tests)</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_build_and_run">2.2. Build and Run</h3>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<strong><code>M2_HOME</code> env must be set</strong> to run integration tests!<br>
-<strong>Docker must be installed</strong> to run (some) integration tests!
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># clone project
-git clone0 git@github.com:spring-projects-experimental/spring-boot-migrator.git
-
-# build project
-cd spring-boot-migrator
-mvn clean install
-
-# Ignore all tests
-mvn clean install -DskipTests
-
-# Ignore all tests marked with @Tag("integration")
-mvn clean install -DskipITs
-
-# Run the jar
-java -jar applications/spring-shell/target/spring-boot-migrator.jar</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_concepts">3. Concepts</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>SBM offers commands to scan application source code and run recipes against it.
-Recipes bundle actions to apply source code migrations or find information in the codebase.</p>
-</div>
-<div class="paragraph">
-<p>An <code>Action</code> is a single step in a recipe and can be reused by other recipes.
-Every <code>Recipe</code> has at least one <code>Action</code> and each Recipe and every action has a condition which defines if the recipe and/or it&#8217;s actions are applicable.</p>
-</div>
-<div class="paragraph">
-<p>The condition has access to all resources to evaluate to <code>true</code> or <code>false</code>.
-If a recipe&#8217;s condition evaluates to <code>false</code> the recipe is not displayed.
-Actions with a condition evaluating to <code>true</code> are applicable and will be executed with the recipe.
-When all actions of a recipe evaluate to <code>false</code> the recipe itself is not applicable.</p>
-</div>
-<div class="sect2">
-<h3 id="_recipes">3.1. Recipes</h3>
-<div class="paragraph">
-<p>Recipes can be declared in yaml syntax or provided as Java bean definitions.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>See <a href="./components/sbm-support-boot/src/main/resources/recipes/initialize-spring-boot-migration.yaml">initialize-spring-boot-migration.yaml</a> for a recipe in YAML syntax</p>
-</li>
-<li>
-<p>See <a href="./components/sbm-recipes-mule-to-boot/src/main/java/org/springframework/sbm/mule/MigrateMuleToBoot.java">MigrateMuleToBoot.java</a> for a recipe as Spring bean.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_actions">3.2. Actions</h3>
-<div class="paragraph">
-<p>Action is the starting point when developing a recipe.
-Every Action has access to all resources and their ASTs through the <code>ProjectContext</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">class MyAction extends AbstractAction {
-    void apply(ProjectContext context) {
-        // analyse and modify AST
-    }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_projectcontext">3.3. ProjectContext</h3>
-<div class="paragraph">
-<p>After scanning and parsing the source code of a given application a <code>ProjectContext</code> gets created.
-The <code>ProjectContext</code> acts as facade to the <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a> (AST) of the project and provides an API to access project resources.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ProjectJavaSources pjs = context.getProjectJavaSources();
-ApplicationModules am = context.getApplicationModules()</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The <code>ProjectContext</code> represents the current application state in memory and provides access to all resources.
-The API provides methods to retrieve and modify Java source, application modules and build files.
-All other resource types can be retrieved using finders.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="Finders">3.4. Finders</h3>
-<div class="paragraph">
-<p>Finders are useful to access and filter resources.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ProjectResourceFinder&lt;T&gt; {
-    T apply(ProjectResourceSet projectResourceSet);
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finder have access to the <code>ProjectResourceSet</code> (see <a href="#ProjectResourceSet">[ProjectResourceSet]</a>) to filter/find resources and return the result.
-The result is of the same type as the generic type <code>T</code>.</p>
-</div>
-<div class="paragraph">
-<p>The ProjectContext provides a <code>search(..)</code> method to apply Finder.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">List&lt;..&gt; resources = projectContext.search(new PathMatchingProjectResourceFinder("/**/some/path/*.file"));</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finders also provide access to specialized resources, resources that are not directly accessible through the ProjectContext Api.
-Specialized resources like <code>SpringBootApplicationProperties</code>, <code>PersistenceXml</code>, <code>WebXml</code>, &#8230;&#8203;, can be retrieved by their <code>Finder</code>s.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">void apply(ProjectContext context) {
-    SpringBootApplicationProperties p = context.search(new SpringBootApplicationPropertiesFinder());
-    p.getProperty("cloud-profile", "some.property.key")
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Read the <a href="#Specialized_Resources">Specialized Resources</a> section to learn how you can provide new Specialized Resources.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_modules">3.5. Modules</h3>
-<div class="paragraph">
-<p>Since 0.9.0 SBM starts to support <a href="https://maven.apache.org/guides/mini/guide-multiple-modules.html#the-reactor">multi module applications</a>.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_how_to">4. How To</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_implement_actions">4.1. Implement Actions</h3>
-<div class="paragraph">
-<p>First step on your journey to implement a new recipe will be the implementation of an <code>Action</code>.
-Every</p>
-</div>
-<div class="sect3">
-<h4 id="_display_progress">4.1.1. Display Progress</h4>
-<div class="paragraph">
-<p>A long running action can leave the user without any information about the progress of the migration.</p>
-</div>
-<div class="paragraph">
-<p>The <code>Action</code> interface defines methods to display progress information to the user.
-There are two types of rendered information, process and log messages.</p>
-</div>
-<div class="sect4">
-<h5 id="_process">Process</h5>
-<div class="paragraph">
-<p><code>startStep(String)</code> starts a new sub routine.</p>
-</div>
-<div class="paragraph">
-<p><code>stopStep()</code> stops the last sub routine</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_log_messages">Log Messages</h5>
-<div class="paragraph">
-<p><code>logEvent(String)</code> logs a message inside a routine</p>
-</div>
-<div class="paragraph">
-<p>When an action starts, a first process (the action) is automatically started.
-It begins with the action and ends with success or error.
-If no other progress change is reported during the execution of the action, a loader is rendered during the</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">.    My Action
-..   My Action
-[..] My Action
-    .    Sub Routine
-    ..   Sub Routine
-    [ok] Sub Routine
-[ok] My Action</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_creating_recipes">4.2. Creating Recipes</h3>
-<div class="sect3">
-<h4 id="_declarative_recipes">4.2.1. Declarative recipes</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_recipe_beans">4.2.2. Recipe beans</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_create_a_condition">4.3. Create a Condition</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_buildfile_and_dependencies">4.4. BuildFile and Dependencies</h3>
-<div class="sect3">
-<h4 id="_adding_a_dependency">4.4.1. Adding a Dependency</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_removing_a_dependency">4.4.2. Removing a Dependency</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_adding_dependency_exclusion">4.4.3. Adding Dependency Exclusion</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_migrating_java_code">4.5. Migrating Java Code</h3>
-<div class="sect3">
-<h4 id="_access_all_javasources">4.5.1. Access all JavaSources</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_adding_annotations">4.5.2. Adding annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_removing_annotations">4.5.3. Removing annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_modifying_annotations">4.5.4. Modifying annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_migrating_methods">4.5.5. Migrating Methods</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_add_a_new_javasource">4.5.6. Add a new JavaSource</h4>
-<div class="paragraph">
-<p>A new <code>JavaSource</code> must be added to a <code>JavaSourceSet</code> of a given <code>ApplicationModule</code>.
-The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) and 'test' (<code>src/test/java</code>).</p>
-</div>
-<div class="paragraph">
-<p>Example: Adding a new Java class to the 'main' source set of an <code>ApplicationModule</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public void apply(ProjectContext context) {
-
-    ApplicationModule targetModule = ... // retrieve target module
-
-    String javaCode =
-        "package com.example.foo;\n" +
-        "public class Bar {}";
-
-    Path projectRootDirectory = context.getProjectRootDirectory();
-
-    targetModule.getMainJavaSourceSet().addJavaSource(projectRootDirectory, sourceFolder, src, packageName);
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_openrewrite_recipe_and_visitor">4.6. OpenRewrite Recipe and Visitor</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_use_freemarker_templates">4.7. Use Freemarker templates</h3>
-<div class="paragraph">
-<p>Add this snippet to your Action to use freemarker</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Autowired
-@JsonIgnore
-@Setter
-private Configuration configuration;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and place your template under <code>src/main/resources/templates</code></p>
-</div>
-<div class="paragraph">
-<p>Example: using Freemarker template in Action</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
-params.put("groupId", "com.example.change");
-params.put("artifactId", projectName);
-params.put("version", "0.1.0-SNAPSHOT");
-
-StringWriter writer = new StringWriter();
-try {
-    Template template = configuration.getTemplate("minimal-pom-xml.ftl");
-    template.process(params, writer);
-} catch (TemplateException | IOException e) {
-    throw new RuntimeException(e);
-}
-String src = writer.toString();</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_migrate_multi_module_projects">4.8. Migrate Multi Module Projects</h3>
-<div class="sect3">
-<h4 id="_access_a_modules_javasources">4.8.1. Access a Module&#8217;s JavaSources</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="Specialized_Resources">4.9. Specialized Resources</h3>
-<div class="sect3">
-<h4 id="_create_a_finder_to_access_other_resources">4.9.1. Create a Finder to access other resources</h4>
-<div class="paragraph">
-<p>The <code>ProjectContext</code> only offers direct access to Java and BuildFile resources.
-To access other resources the concept of <code>Finder</code>s exists.
-A <code>Finder</code> implements the <code>ResourceFinder</code> interface.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public interface ProjectResourceFinder&lt;T&gt; {
-    T apply(ProjectResourceSet projectResourceSet);
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>These <code>Finder</code>s can than be provided to the <code>search(&#8230;&#8203;)</code> method of <code>ProjectContext</code>.
-The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code> to the <code>Finder</code> and the <code>Finder</code> can then filter/search</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_manipulate_spring_boot_properties">4.9.2. Manipulate Spring Boot properties</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_create_a_specialized_resource">4.9.3. Create a specialized Resource</h4>
-
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_testing">5. Testing</h2>
+<h2 id="_testing">Testing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Different classes exist to help writing tests for <code>Recipe</code>s, <code>Condition</code>s and <code>Action</code>s.</p>
 </div>
 <div class="sect2">
-<h3 id="_testprojectcontext">5.1. TestProjectContext</h3>
+<h3 id="_testprojectcontext">TestProjectContext</h3>
 <div class="paragraph">
 <p>When testing <code>Action</code>s and <code>Condition</code>s you&#8217;ll need a initialized ProjectContext as test fixture.
 To avoid reading projects for testing from the filesystem the <code>TestProjectContext</code> can be used.</p>
@@ -944,7 +468,7 @@ strings as if they were read from filesystem. Have a look at the API documentati
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String sourceCode = "package com.acme.app;\npublic class MyClass {}";
+<pre class="highlight"><code class="language-java" data-lang="java">String sourceCode = "package com.acme.app;\npublic class MyClass {}";
 
 ProjectContext projectContext = TestProjectContext.buildProjectContext() <b class="conum">(1)</b>
         .withBuildFileHavingDependencies("org.junit.jupiter:junit-jupiter-api:5.7.0") <b class="conum">(2)</b>
@@ -972,7 +496,7 @@ ProjectContext projectContext = TestProjectContext.buildProjectContext() <b clas
 </div>
 </div>
 <div class="sect2">
-<h3 id="_projectcontextfilesystemtestsupport">5.2. ProjectContextFileSystemTestSupport</h3>
+<h3 id="_projectcontextfilesystemtestsupport">ProjectContextFileSystemTestSupport</h3>
 <div class="paragraph">
 <p>If you want to create a ProjectContext from filesystem, <code>ProjectContextFileSystemTestSupport</code> is your friend.<br>
 It assumes a directory <code>testcode</code> in the same module as the test resides in.
@@ -981,7 +505,7 @@ The resources are then copied to <code>target/test-projects/my-project</code> an
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Test
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
 void someTest() {
     ProjectContext projectContext = ProjectContextFileSystemTestSupport
                                             .createProjectContextFromDir("boot-23-app");
@@ -994,13 +518,13 @@ void someTest() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</h3>
+<h3 id="_recipeintegrationtestsupport">RecipeIntegrationTestSupport</h3>
 <div class="paragraph">
 <p>If you want to integration test a recipe, <code>RecipeIntegrationTestSupport</code> can help you.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">String applicationDir = "example-app"; <b class="conum">(1)</b>
+<pre class="highlight"><code class="language-java" data-lang="java">String applicationDir = "example-app"; <b class="conum">(1)</b>
 
 RecipeIntegrationTestSupport.initializeProject(applicationDir)
         .andApplyRecipe("boot-2.4-2.5-datasource-initializer"); <b class="conum">(2)</b>
@@ -1035,12 +559,5 @@ assertThat(javaClass).hasContent("..."); <b class="conum">(4)</b></code></pre>
 Last updated 2022-02-28 16:11:47 UTC
 </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
-<script>
-if (!hljs.initHighlighting.called) {
-  hljs.initHighlighting.called = true
-  ;[].slice.call(document.querySelectorAll('pre.highlight > code')).forEach(function (el) { hljs.highlightBlock(el) })
-}
-</script>
 </body>
 </html>
