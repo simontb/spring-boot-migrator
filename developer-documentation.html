@@ -461,52 +461,59 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_actions">3.2. Actions</a></li>
 <li><a href="#_projectcontext">3.3. ProjectContext</a></li>
 <li><a href="#Finders">3.4. Finders</a></li>
-<li><a href="#_modules">3.5. Modules</a></li>
+<li><a href="#_application_lifecycle">3.5. Application Lifecycle</a>
+<ul class="sectlevel3">
+<li><a href="#_scan_application">3.5.1. Scan Application</a></li>
+<li><a href="#_apply_recipe">3.5.2. Apply Recipe</a></li>
+</ul>
+</li>
+<li><a href="#_modules">3.6. Modules</a></li>
 </ul>
 </li>
 <li><a href="#_how_to">4. How To</a>
 <ul class="sectlevel2">
-<li><a href="#_implement_actions">4.1. Implement Actions</a>
+<li><a href="#_check_preconditions">4.1. Check Preconditions</a></li>
+<li><a href="#_implement_actions">4.2. Implement Actions</a>
 <ul class="sectlevel3">
-<li><a href="#_display_progress">4.1.1. Display Progress</a></li>
+<li><a href="#_display_progress">4.2.1. Display Progress</a></li>
 </ul>
 </li>
-<li><a href="#_creating_recipes">4.2. Creating Recipes</a>
+<li><a href="#_creating_recipes">4.3. Creating Recipes</a>
 <ul class="sectlevel3">
-<li><a href="#_declarative_recipes">4.2.1. Declarative recipes</a></li>
-<li><a href="#_recipe_beans">4.2.2. Recipe beans</a></li>
+<li><a href="#_declarative_recipes">4.3.1. Declarative recipes</a></li>
+<li><a href="#_recipe_beans">4.3.2. Recipe beans</a></li>
 </ul>
 </li>
-<li><a href="#_create_a_condition">4.3. Create a Condition</a></li>
-<li><a href="#_buildfile_and_dependencies">4.4. BuildFile and Dependencies</a>
+<li><a href="#_create_a_condition">4.4. Create a Condition</a></li>
+<li><a href="#_buildfile_and_dependencies">4.5. BuildFile and Dependencies</a>
 <ul class="sectlevel3">
-<li><a href="#_adding_a_dependency">4.4.1. Adding a Dependency</a></li>
-<li><a href="#_removing_a_dependency">4.4.2. Removing a Dependency</a></li>
-<li><a href="#_adding_dependency_exclusion">4.4.3. Adding Dependency Exclusion</a></li>
+<li><a href="#_adding_a_dependency">4.5.1. Adding a Dependency</a></li>
+<li><a href="#_removing_a_dependency">4.5.2. Removing a Dependency</a></li>
+<li><a href="#_adding_dependency_exclusion">4.5.3. Adding Dependency Exclusion</a></li>
 </ul>
 </li>
-<li><a href="#_migrating_java_code">4.5. Migrating Java Code</a>
+<li><a href="#_migrating_java_code">4.6. Migrating Java Code</a>
 <ul class="sectlevel3">
-<li><a href="#_access_all_javasources">4.5.1. Access all JavaSources</a></li>
-<li><a href="#_adding_annotations">4.5.2. Adding annotations</a></li>
-<li><a href="#_removing_annotations">4.5.3. Removing annotations</a></li>
-<li><a href="#_modifying_annotations">4.5.4. Modifying annotations</a></li>
-<li><a href="#_migrating_methods">4.5.5. Migrating Methods</a></li>
-<li><a href="#_add_a_new_javasource">4.5.6. Add a new JavaSource</a></li>
+<li><a href="#_access_all_javasources">4.6.1. Access all JavaSources</a></li>
+<li><a href="#_adding_annotations">4.6.2. Adding annotations</a></li>
+<li><a href="#_removing_annotations">4.6.3. Removing annotations</a></li>
+<li><a href="#_modifying_annotations">4.6.4. Modifying annotations</a></li>
+<li><a href="#_migrating_methods">4.6.5. Migrating Methods</a></li>
+<li><a href="#_add_a_new_javasource">4.6.6. Add a new JavaSource</a></li>
 </ul>
 </li>
-<li><a href="#_openrewrite_recipe_and_visitor">4.6. OpenRewrite Recipe and Visitor</a></li>
-<li><a href="#_use_freemarker_templates">4.7. Use Freemarker templates</a></li>
-<li><a href="#_migrate_multi_module_projects">4.8. Migrate Multi Module Projects</a>
+<li><a href="#_openrewrite_recipe_and_visitor">4.7. OpenRewrite Recipe and Visitor</a></li>
+<li><a href="#_use_freemarker_templates">4.8. Use Freemarker templates</a></li>
+<li><a href="#_migrate_multi_module_projects">4.9. Migrate Multi Module Projects</a>
 <ul class="sectlevel3">
-<li><a href="#_access_a_modules_javasources">4.8.1. Access a Module&#8217;s JavaSources</a></li>
+<li><a href="#_access_a_modules_javasources">4.9.1. Access a Module&#8217;s JavaSources</a></li>
 </ul>
 </li>
-<li><a href="#Specialized_Resources">4.9. Specialized Resources</a>
+<li><a href="#Specialized_Resources">4.10. Specialized Resources</a>
 <ul class="sectlevel3">
-<li><a href="#_create_a_finder_to_access_other_resources">4.9.1. Create a Finder to access other resources</a></li>
-<li><a href="#_manipulate_spring_boot_properties">4.9.2. Manipulate Spring Boot properties</a></li>
-<li><a href="#_create_a_specialized_resource">4.9.3. Create a specialized Resource</a></li>
+<li><a href="#_create_a_finder_to_access_other_resources">4.10.1. Create a Finder to access other resources</a></li>
+<li><a href="#_manipulate_spring_boot_properties">4.10.2. Manipulate Spring Boot properties</a></li>
+<li><a href="#_create_a_specialized_resource">4.10.3. Create a specialized Resource</a></li>
 </ul>
 </li>
 </ul>
@@ -516,6 +523,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_testprojectcontext">5.1. TestProjectContext</a></li>
 <li><a href="#_projectcontextfilesystemtestsupport">5.2. ProjectContextFileSystemTestSupport</a></li>
 <li><a href="#_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</a></li>
+<li><a href="#_integrationtestbaseclass">5.4. IntegrationTestBaseClass</a></li>
 </ul>
 </li>
 </ul>
@@ -698,7 +706,81 @@ Specialized resources like <code>SpringBootApplicationProperties</code>, <code>P
 </div>
 </div>
 <div class="sect2">
-<h3 id="_modules">3.5. Modules</h3>
+<h3 id="_application_lifecycle">3.5. Application Lifecycle</h3>
+<div class="sect3">
+<h4 id="_scan_application">3.5.1. Scan Application</h4>
+<div class="paragraph">
+<p>The user provides a root directory to scan a project.
+After scanning the given directory a set of preconditions is checked to verify that the scanned project can be successfully parsed.
+See <a href="#_check_preconditions">Check Preconditions</a> to learn how you can provide additional precondition checks.</p>
+</div>
+<div class="sect4">
+<h5 id="_parsing">Parsing</h5>
+<div class="paragraph">
+<p>When all preconditions are met the project resources are parsed and the abstract syntax tree (AST) gets created in memory.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_specialized_resources">Specialized Resources</h5>
+<div class="paragraph">
+<p>After parsing the project resources a set of <code>ProjectResourceWrapper</code>s is called and generic resources can be replaced
+with more specialized resources providing a specialized API for these resources.
+Think of replacing a generic XML file representing <code>persistence.xml</code> (JPA deployment descriptor) with a specialized
+resource representation offering an API to act on a specialized "JPA deployment descriptor".
+See <a href="#_specialized_resources">Specialized Resources</a> to learn how yo can provide specialized resources.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_creating_the_projectcontext">Creating the ProjectContext</h5>
+<div class="paragraph">
+<p>After replacing specialized resources the ProjectContext gets created.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_display_applicable_recipes">Display Applicable Recipes</h5>
+<div class="paragraph">
+<p>With the <code>ProjectContext</code> in place SBM checks all <code>Condition</code>s of recipes and their <code>Action</code>s to find applicable recipes.
+The resulting list of applicable recipes is then shown to the user to select and apply recipes against the scanned application.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_apply_recipe">3.5.2. Apply Recipe</h4>
+<div class="paragraph">
+<p>The user applies a recipe of the list of applicable recipes.</p>
+</div>
+<div class="sect4">
+<h5 id="_applying_recipe_actions">Applying Recipe Actions</h5>
+<div class="paragraph">
+<p>SBM provides the <code>ProjectContext</code> to the list of applicable <code>Action</code>s and each <code>Action</code> modifies the AST through the
+<code>ProjectContext</code> API. These modifications are only represented in memory.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_verify_application_in_sync">Verify Application In Sync</h5>
+<div class="paragraph">
+<p>After applying all <code>Action</code>s of the <code>Recipe</code> he changes need to be written back to filesystem.
+When <code>sbm.gitSupportEnabled</code> is <code>true</code> SBM verifies that nothing changed in the scanned project while the recipe was applied.
+If the git hash changed or non-indexed resources are found the changes are rolled back, the project must be synced,
+re-scanned and the recipe needs to be re-applied.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_writing_back_changes">Writing Back Changes</h5>
+<div class="paragraph">
+<p>When git support is disabled or the project is in sync the in-memory representation is written back to the file system.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_commit_changes">Commit Changes</h5>
+<div class="paragraph">
+<p>When git support is enabled SBM commits the changes applied by running the recipe and the next recipe can be applied.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_modules">3.6. Modules</h3>
 <div class="paragraph">
 <p>Since 0.9.0 SBM starts to support <a href="https://maven.apache.org/guides/mini/guide-multiple-modules.html#the-reactor">multi module applications</a>.</p>
 </div>
@@ -709,7 +791,11 @@ Specialized resources like <code>SpringBootApplicationProperties</code>, <code>P
 <h2 id="_how_to">4. How To</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_implement_actions">4.1. Implement Actions</h3>
+<h3 id="_check_preconditions">4.1. Check Preconditions</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_implement_actions">4.2. Implement Actions</h3>
 <div class="paragraph">
 <p>First step on your journey to implement a new recipe will be the implementation of an <code>Action</code>.
 Every Action that needs access to the ProjectContext to modify resources should extend <code>AbstractAction</code>.</p>
@@ -727,7 +813,7 @@ Every Action that needs access to the ProjectContext to modify resources should 
 <p>Use <a href="#_testprojectcontext">TestProjectContext</a> to test your Action.</p>
 </div>
 <div class="sect3">
-<h4 id="_display_progress">4.1.1. Display Progress</h4>
+<h4 id="_display_progress">4.2.1. Display Progress</h4>
 <div class="paragraph">
 <p>A long running action can leave the user without any information about the progress of the migration.</p>
 </div>
@@ -769,7 +855,7 @@ If no other progress change is reported during the execution of the action, a lo
 </div>
 </div>
 <div class="sect2">
-<h3 id="_creating_recipes">4.2. Creating Recipes</h3>
+<h3 id="_creating_recipes">4.3. Creating Recipes</h3>
 <div class="paragraph">
 <p>Recipes bundle a set of Actions for a migration.
 They can be declared programmatically as Spring beans or declarative using yaml syntax.
@@ -777,14 +863,14 @@ The main difference is that yaml recipes can be provided to SBM without code cha
 declarative recipes without recompilation while the bean definition is arguably easier to use.</p>
 </div>
 <div class="sect3">
-<h4 id="_declarative_recipes">4.2.1. Declarative recipes</h4>
+<h4 id="_declarative_recipes">4.3.1. Declarative recipes</h4>
 <div class="paragraph">
 <p>Declarative recipes must be placed under <code>src/main`resources/recipes</code>.<br>
 See <a href="https://github.com/spring-projects-experimental/spring-boot-migrator/blob/main/components/sbm-support-boot/src/main/resources/recipes/initialize-spring-boot-migration.yaml" target="_blank" rel="noopener">initialize-spring-boot-migration.yaml</a> for a recipe in YAML syntax</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_recipe_beans">4.2.2. Recipe beans</h4>
+<h4 id="_recipe_beans">4.3.2. Recipe beans</h4>
 <div class="paragraph">
 <p>A recipe can be defined as Spring bean using @Bean annotated method, see <a href="https://github.com/spring-projects-experimental/spring-boot-migrator/blob/main/components/sbm-recipes-mule-to-boot/src/main/java/org/springframework/sbm/mule/MigrateMuleToBoot.java" target="_blank" rel="noopener">MigrateMuleToBoot.java</a> for a recipe declared as Spring bean.</p>
 </div>
@@ -803,48 +889,48 @@ Remember to provide a description to all Actions to display the description to t
 </div>
 </div>
 <div class="sect2">
-<h3 id="_create_a_condition">4.3. Create a Condition</h3>
+<h3 id="_create_a_condition">4.4. Create a Condition</h3>
 
 </div>
 <div class="sect2">
-<h3 id="_buildfile_and_dependencies">4.4. BuildFile and Dependencies</h3>
+<h3 id="_buildfile_and_dependencies">4.5. BuildFile and Dependencies</h3>
 <div class="sect3">
-<h4 id="_adding_a_dependency">4.4.1. Adding a Dependency</h4>
+<h4 id="_adding_a_dependency">4.5.1. Adding a Dependency</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_removing_a_dependency">4.4.2. Removing a Dependency</h4>
+<h4 id="_removing_a_dependency">4.5.2. Removing a Dependency</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_adding_dependency_exclusion">4.4.3. Adding Dependency Exclusion</h4>
+<h4 id="_adding_dependency_exclusion">4.5.3. Adding Dependency Exclusion</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrating_java_code">4.5. Migrating Java Code</h3>
+<h3 id="_migrating_java_code">4.6. Migrating Java Code</h3>
 <div class="sect3">
-<h4 id="_access_all_javasources">4.5.1. Access all JavaSources</h4>
+<h4 id="_access_all_javasources">4.6.1. Access all JavaSources</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_adding_annotations">4.5.2. Adding annotations</h4>
+<h4 id="_adding_annotations">4.6.2. Adding annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_removing_annotations">4.5.3. Removing annotations</h4>
+<h4 id="_removing_annotations">4.6.3. Removing annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_modifying_annotations">4.5.4. Modifying annotations</h4>
+<h4 id="_modifying_annotations">4.6.4. Modifying annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_migrating_methods">4.5.5. Migrating Methods</h4>
+<h4 id="_migrating_methods">4.6.5. Migrating Methods</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_add_a_new_javasource">4.5.6. Add a new JavaSource</h4>
+<h4 id="_add_a_new_javasource">4.6.6. Add a new JavaSource</h4>
 <div class="paragraph">
 <p>A new <code>JavaSource</code> must be added to a <code>JavaSourceSet</code> of a given <code>ApplicationModule</code>.
 The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) and 'test' (<code>src/test/java</code>).</p>
@@ -871,11 +957,11 @@ The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_openrewrite_recipe_and_visitor">4.6. OpenRewrite Recipe and Visitor</h3>
+<h3 id="_openrewrite_recipe_and_visitor">4.7. OpenRewrite Recipe and Visitor</h3>
 
 </div>
 <div class="sect2">
-<h3 id="_use_freemarker_templates">4.7. Use Freemarker templates</h3>
+<h3 id="_use_freemarker_templates">4.8. Use Freemarker templates</h3>
 <div class="paragraph">
 <p>Add this snippet to your Action to use freemarker</p>
 </div>
@@ -917,16 +1003,16 @@ String src = writer.toString();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrate_multi_module_projects">4.8. Migrate Multi Module Projects</h3>
+<h3 id="_migrate_multi_module_projects">4.9. Migrate Multi Module Projects</h3>
 <div class="sect3">
-<h4 id="_access_a_modules_javasources">4.8.1. Access a Module&#8217;s JavaSources</h4>
+<h4 id="_access_a_modules_javasources">4.9.1. Access a Module&#8217;s JavaSources</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="Specialized_Resources">4.9. Specialized Resources</h3>
+<h3 id="Specialized_Resources">4.10. Specialized Resources</h3>
 <div class="sect3">
-<h4 id="_create_a_finder_to_access_other_resources">4.9.1. Create a Finder to access other resources</h4>
+<h4 id="_create_a_finder_to_access_other_resources">4.10.1. Create a Finder to access other resources</h4>
 <div class="paragraph">
 <p>The <code>ProjectContext</code> only offers direct access to Java and BuildFile resources.
 To access other resources the concept of <code>Finder</code>s exists.
@@ -945,11 +1031,11 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_manipulate_spring_boot_properties">4.9.2. Manipulate Spring Boot properties</h4>
+<h4 id="_manipulate_spring_boot_properties">4.10.2. Manipulate Spring Boot properties</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_create_a_specialized_resource">4.9.3. Create a specialized Resource</h4>
+<h4 id="_create_a_specialized_resource">4.10.3. Create a specialized Resource</h4>
 
 </div>
 </div>
@@ -1035,7 +1121,7 @@ void someTest() {
 <div class="sect2">
 <h3 id="_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</h3>
 <div class="paragraph">
-<p>If you want to integration test a recipe, <code>RecipeIntegrationTestSupport</code> can help you.</p>
+<p>If you want to integration test a recipe against a project read from filesystem, <code>RecipeIntegrationTestSupport</code> can help you.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1052,10 +1138,11 @@ assertThat(javaClass).hasContent("..."); <b class="conum">(4)</b></code></pre>
 <div class="colist arabic">
 <ol>
 <li>
-<p>Provide a project, here under ./testcode/example-app/given</p>
+<p>Provide a project, here under <code>./testcode/example-app/given</code>.
+This project will be copied to a clean dir <code>target/test-projects/example-app</code></p>
 </li>
 <li>
-<p>Scan the project and apply the given recipe</p>
+<p>Scan the copied project and apply the given recipe against it</p>
 </li>
 <li>
 <p>Retrieve the path to a resource after migration</p>
@@ -1066,12 +1153,111 @@ assertThat(javaClass).hasContent("..."); <b class="conum">(4)</b></code></pre>
 </ol>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_integrationtestbaseclass">5.4. IntegrationTestBaseClass</h3>
+<div class="paragraph">
+<p>For end-to-end tests using the shell commands <code>IntegrationTestBaseClass</code> will be helpful.<br>
+These are the most complete tests but also the slowest.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Currently these tests reside in <code>spring-shell</code> module.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyFullBlownIntegrationTest extends IntegrationTestBaseClass {
+    @Override
+    protected String getTestSubDir() { <b class="conum">(1)</b>
+        return "some-dir/project-dir"; <b class="conum">(2)</b>
+    }
+
+    @Test
+    @Tag("integration")
+    void migrateSomethingToSpringBoot() {
+        initializeTestProject(); <b class="conum">(3)</b>
+        scanProject(); <b class="conum">(4)</b>
+        applyRecipe("initialize-spring-boot-migration"); <b class="conum">(5)</b>
+        applyRecipe("migrate-x-to-boot"); <b class="conum">(6)</b>
+        // simulate manual step
+        replaceFile( <b class="conum">(7)</b>
+                getTestDir().resolve("src/test/java/com/example/jee/app/PersonServiceTest.java"),
+                getTestDir().resolve("manual-step/BootifiedPersonServiceTest.java")
+        );
+        String localBusinessInterface = loadJavaFile("com.example.jee.app.ejb.local", "ABusinessInterface"); <b class="conum">(8)</b>
+        // verify @Local was removed
+        assertThat(localBusinessInterface).doesNotContain("@Local"); <b class="conum">(9)</b>
+        executeMavenGoals(getTestDir(), "clean", "package", "spring-boot:build-image"); <b class="conum">(10)</b>
+        int port = startDockerContainer("jee-app:8.0.5-SNAPSHOT", 8080); <b class="conum">(11)</b>
+        TestRestTemplate testRestTemplate = new TestRestTemplate(); <b class="conum">(12)</b>
+        // Test Servlet
+        String response = testRestTemplate.getForObject("http://localhost:" + port + "/HelloWorld", String.class); <b class="conum">(13)</b>
+        assertThat(response).isEqualTo("Hello World!"); <b class="conum">(14)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>getTestSubDir()</code> method must be implemented.</p>
+</li>
+<li>
+<p>It must return the path to the test project in <code>src/test/resources</code></p>
+</li>
+<li>
+<p>Copies test project from <code>src/test/resources/some-dir/project-dir</code> to <code>target/sbm-integration-test/some-dir/project-dir</code></p>
+</li>
+<li>
+<p>Scans the copied test project, same as calling <code>scan</code> in CLI</p>
+</li>
+<li>
+<p>Apply the recipe <code>initialize-spring-boot-migration</code>, same as calling <code>apply initialize-spring-boot-migration</code> in CLI.
+Changes will be reflected in the filesystem after this call.</p>
+</li>
+<li>
+<p>Apply another recipe <code>migrate-x-to-boot</code></p>
+</li>
+<li>
+<p>Replace a file, here because the Test needs to be migrated manually</p>
+</li>
+<li>
+<p>Load the content a Java file as String</p>
+</li>
+<li>
+<p>Assertions about the context of the Java file</p>
+</li>
+<li>
+<p>Call <code>mvn clean package spring-boot:build-image</code> in the test project</p>
+</li>
+<li>
+<p>Start the docker image from the last step containing the migrated Spring application</p>
+</li>
+<li>
+<p>Create a RestTemplate</p>
+</li>
+<li>
+<p>Use the RestTemplate to retrive some data from the migrated Spring application running in Docker</p>
+</li>
+<li>
+<p>Verify the response</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-21 16:31:21 UTC
+Last updated 2022-03-23 13:58:10 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

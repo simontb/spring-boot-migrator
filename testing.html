@@ -520,7 +520,7 @@ void someTest() {
 <div class="sect2">
 <h3 id="_recipeintegrationtestsupport">RecipeIntegrationTestSupport</h3>
 <div class="paragraph">
-<p>If you want to integration test a recipe, <code>RecipeIntegrationTestSupport</code> can help you.</p>
+<p>If you want to integration test a recipe against a project read from filesystem, <code>RecipeIntegrationTestSupport</code> can help you.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -537,10 +537,11 @@ assertThat(javaClass).hasContent("..."); <b class="conum">(4)</b></code></pre>
 <div class="colist arabic">
 <ol>
 <li>
-<p>Provide a project, here under ./testcode/example-app/given</p>
+<p>Provide a project, here under <code>./testcode/example-app/given</code>.
+This project will be copied to a clean dir <code>target/test-projects/example-app</code></p>
 </li>
 <li>
-<p>Scan the project and apply the given recipe</p>
+<p>Scan the copied project and apply the given recipe against it</p>
 </li>
 <li>
 <p>Retrieve the path to a resource after migration</p>
@@ -551,12 +552,111 @@ assertThat(javaClass).hasContent("..."); <b class="conum">(4)</b></code></pre>
 </ol>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_integrationtestbaseclass">IntegrationTestBaseClass</h3>
+<div class="paragraph">
+<p>For end-to-end tests using the shell commands <code>IntegrationTestBaseClass</code> will be helpful.<br>
+These are the most complete tests but also the slowest.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Currently these tests reside in <code>spring-shell</code> module.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyFullBlownIntegrationTest extends IntegrationTestBaseClass {
+    @Override
+    protected String getTestSubDir() { <b class="conum">(1)</b>
+        return "some-dir/project-dir"; <b class="conum">(2)</b>
+    }
+
+    @Test
+    @Tag("integration")
+    void migrateSomethingToSpringBoot() {
+        initializeTestProject(); <b class="conum">(3)</b>
+        scanProject(); <b class="conum">(4)</b>
+        applyRecipe("initialize-spring-boot-migration"); <b class="conum">(5)</b>
+        applyRecipe("migrate-x-to-boot"); <b class="conum">(6)</b>
+        // simulate manual step
+        replaceFile( <b class="conum">(7)</b>
+                getTestDir().resolve("src/test/java/com/example/jee/app/PersonServiceTest.java"),
+                getTestDir().resolve("manual-step/BootifiedPersonServiceTest.java")
+        );
+        String localBusinessInterface = loadJavaFile("com.example.jee.app.ejb.local", "ABusinessInterface"); <b class="conum">(8)</b>
+        // verify @Local was removed
+        assertThat(localBusinessInterface).doesNotContain("@Local"); <b class="conum">(9)</b>
+        executeMavenGoals(getTestDir(), "clean", "package", "spring-boot:build-image"); <b class="conum">(10)</b>
+        int port = startDockerContainer("jee-app:8.0.5-SNAPSHOT", 8080); <b class="conum">(11)</b>
+        TestRestTemplate testRestTemplate = new TestRestTemplate(); <b class="conum">(12)</b>
+        // Test Servlet
+        String response = testRestTemplate.getForObject("http://localhost:" + port + "/HelloWorld", String.class); <b class="conum">(13)</b>
+        assertThat(response).isEqualTo("Hello World!"); <b class="conum">(14)</b>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>The <code>getTestSubDir()</code> method must be implemented.</p>
+</li>
+<li>
+<p>It must return the path to the test project in <code>src/test/resources</code></p>
+</li>
+<li>
+<p>Copies test project from <code>src/test/resources/some-dir/project-dir</code> to <code>target/sbm-integration-test/some-dir/project-dir</code></p>
+</li>
+<li>
+<p>Scans the copied test project, same as calling <code>scan</code> in CLI</p>
+</li>
+<li>
+<p>Apply the recipe <code>initialize-spring-boot-migration</code>, same as calling <code>apply initialize-spring-boot-migration</code> in CLI.
+Changes will be reflected in the filesystem after this call.</p>
+</li>
+<li>
+<p>Apply another recipe <code>migrate-x-to-boot</code></p>
+</li>
+<li>
+<p>Replace a file, here because the Test needs to be migrated manually</p>
+</li>
+<li>
+<p>Load the content a Java file as String</p>
+</li>
+<li>
+<p>Assertions about the context of the Java file</p>
+</li>
+<li>
+<p>Call <code>mvn clean package spring-boot:build-image</code> in the test project</p>
+</li>
+<li>
+<p>Start the docker image from the last step containing the migrated Spring application</p>
+</li>
+<li>
+<p>Create a RestTemplate</p>
+</li>
+<li>
+<p>Use the RestTemplate to retrive some data from the migrated Spring application running in Docker</p>
+</li>
+<li>
+<p>Verify the response</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-21 16:31:21 UTC
+Last updated 2022-03-23 13:58:10 UTC
 </div>
 </div>
 </body>
