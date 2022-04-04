@@ -792,7 +792,32 @@ re-scanned and the recipe needs to be re-applied.</p>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_check_preconditions">4.1. Check Preconditions</h3>
-
+<div class="paragraph">
+<p>Preconditions that must be met to allow a successful migration can be checked before scanning an application.
+This allows a user to be informed about unmet preconditions that would prevent a successful migration before the
+sometimes lengthy parsing is done.</p>
+</div>
+<div class="paragraph">
+<p>To add a new precondition check you need to provide a component extending abstract <code>PreconditionCheck</code> class
+and return the result of the precondition check as <code>PreconditionCheckResult</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Component
+public class MyPreconditionCheck extends PreconditionCheck {
+    @Override
+    public PreconditionCheckResult verify(Path projectRoot, List&lt;Resource&gt; projectResources) {
+        // verify precondition is met...
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This class must be placed under <code>org.springframework.sbm</code> to be picked up by component scan and gets executed after scanning
+the project but before parsing resources into an AST.
+If one of the preconditions fails (<code>ResultState.WARN</code> or <code>ResultState.FAILED</code>), the scan is interrupted and a message is
+shown to the user.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_implement_actions">4.2. Implement Actions</h3>
@@ -1257,7 +1282,7 @@ Changes will be reflected in the filesystem after this call.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-03-31 09:19:12 UTC
+Last updated 2022-04-04 13:37:40 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
