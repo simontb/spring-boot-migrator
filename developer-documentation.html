@@ -520,12 +520,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_testing">5. Testing</a>
 <ul class="sectlevel2">
-<li><a href="#_testprojectcontext">5.1. TestProjectContext</a></li>
-<li><a href="#_projectcontextfilesystemtestsupport">5.2. ProjectContextFileSystemTestSupport</a></li>
-<li><a href="#_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</a></li>
-<li><a href="#_integrationtestbaseclass">5.4. IntegrationTestBaseClass</a></li>
+<li><a href="#_windows_linux">5.1. Windows &amp; Linux</a>
+<ul class="sectlevel3">
+<li><a href="#_ignoring_line_separator_in_assertions">5.1.1. Ignoring Line separator in assertions</a></li>
 </ul>
 </li>
+<li><a href="#_testprojectcontext">5.2. TestProjectContext</a></li>
+<li><a href="#_projectcontextfilesystemtestsupport">5.3. ProjectContextFileSystemTestSupport</a></li>
+<li><a href="#_recipeintegrationtestsupport">5.4. RecipeIntegrationTestSupport</a></li>
+<li><a href="#_integrationtestbaseclass">5.5. IntegrationTestBaseClass</a></li>
+</ul>
+</li>
+<li><a href="#_contributing">6. Contributing</a></li>
 </ul>
 </div>
 </div>
@@ -1073,7 +1079,21 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 <p>Different classes exist to help writing tests for <code>Recipe</code>s, <code>Condition</code>s and <code>Action</code>s.</p>
 </div>
 <div class="sect2">
-<h3 id="_testprojectcontext">5.1. TestProjectContext</h3>
+<h3 id="_windows_linux">5.1. Windows &amp; Linux</h3>
+<div class="paragraph">
+<p>Linebreaks, encoding and path separator do (most probably will) differ depending on the OS the tests and the application
+is executed on.</p>
+</div>
+<div class="paragraph">
+<p>To make the tests and application run on Windows, Linux and OSX you must take precautions in some cases.</p>
+</div>
+<div class="sect3">
+<h4 id="_ignoring_line_separator_in_assertions">5.1.1. Ignoring Line separator in assertions</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testprojectcontext">5.2. TestProjectContext</h3>
 <div class="paragraph">
 <p>When testing <code>Action</code>s and <code>Condition</code>s you&#8217;ll need a initialized ProjectContext as test fixture.
 To avoid reading projects for testing from the filesystem the <code>TestProjectContext</code> can be used.</p>
@@ -1122,7 +1142,7 @@ ProjectContext projectContext = TestProjectContext.buildProjectContext() <b clas
 </div>
 </div>
 <div class="sect2">
-<h3 id="_projectcontextfilesystemtestsupport">5.2. ProjectContextFileSystemTestSupport</h3>
+<h3 id="_projectcontextfilesystemtestsupport">5.3. ProjectContextFileSystemTestSupport</h3>
 <div class="paragraph">
 <p>If you want to create a ProjectContext from filesystem, <code>ProjectContextFileSystemTestSupport</code> is your friend.<br>
 It assumes a directory <code>testcode</code> in the same module as the test resides in.
@@ -1144,7 +1164,7 @@ void someTest() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_recipeintegrationtestsupport">5.3. RecipeIntegrationTestSupport</h3>
+<h3 id="_recipeintegrationtestsupport">5.4. RecipeIntegrationTestSupport</h3>
 <div class="paragraph">
 <p>If you want to integration test a recipe against a project read from filesystem, <code>RecipeIntegrationTestSupport</code> can help you.</p>
 </div>
@@ -1179,7 +1199,7 @@ This project will be copied to a clean dir <code>target/test-projects/example-ap
 </div>
 </div>
 <div class="sect2">
-<h3 id="_integrationtestbaseclass">5.4. IntegrationTestBaseClass</h3>
+<h3 id="_integrationtestbaseclass">5.5. IntegrationTestBaseClass</h3>
 <div class="paragraph">
 <p>For end-to-end tests using the shell commands <code>IntegrationTestBaseClass</code> will be helpful.<br>
 These are the most complete tests but also the slowest.</p>
@@ -1279,10 +1299,51 @@ Changes will be reflected in the filesystem after this call.</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_contributing">6. Contributing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>You want to contribute to the Spring Boot Migrator project?</p>
+</div>
+<div class="paragraph">
+<p>Great! All contributions are welcome.</p>
+</div>
+<div class="paragraph">
+<p>If you have not previously done so, please sign the <a href="https://cla.pivotal.io/sign/spring">Contributor License Agreement</a>. You will be reminded automatically when you submit the pull request.</p>
+</div>
+<div class="paragraph">
+<p>Please also see <a href="../../CONTRIBUTING.adoc">CONTRIBUTING.adoc</a> for further information.</p>
+</div>
+<div class="paragraph">
+<p>All files need to have a license header. Please use this copyright text:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Copyright 2022 the original author or authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can configure license headers under <code>IntelliJ IDEA/Copyright/Copyright Profile</code>.
+See <a href="https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles" class="bare">https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles</a></p>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-19 20:48:30 UTC
+Last updated 2022-04-19 21:33:16 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

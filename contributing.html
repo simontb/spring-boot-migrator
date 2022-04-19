@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>How To</title>
+<title>Contributing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,281 +441,43 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_how_to">How To</h2>
+<h2 id="_contributing">Contributing</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_check_preconditions">Check Preconditions</h3>
 <div class="paragraph">
-<p>Preconditions that must be met to allow a successful migration can be checked before scanning an application.
-This allows a user to be informed about unmet preconditions that would prevent a successful migration before the
-sometimes lengthy parsing is done.</p>
+<p>You want to contribute to the Spring Boot Migrator project?</p>
 </div>
 <div class="paragraph">
-<p>To add a new precondition check you need to provide a component extending abstract <code>PreconditionCheck</code> class
-and return the result of the precondition check as <code>PreconditionCheckResult</code>.</p>
+<p>Great! All contributions are welcome.</p>
+</div>
+<div class="paragraph">
+<p>If you have not previously done so, please sign the <a href="https://cla.pivotal.io/sign/spring">Contributor License Agreement</a>. You will be reminded automatically when you submit the pull request.</p>
+</div>
+<div class="paragraph">
+<p>Please also see <a href="../../CONTRIBUTING.adoc">CONTRIBUTING.adoc</a> for further information.</p>
+</div>
+<div class="paragraph">
+<p>All files need to have a license header. Please use this copyright text:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Component
-public class MyPreconditionCheck extends PreconditionCheck {
-    @Override
-    public PreconditionCheckResult verify(Path projectRoot, List&lt;Resource&gt; projectResources) {
-        // verify precondition is met...
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-text" data-lang="text">Copyright 2022 the original author or authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This class must be placed under <code>org.springframework.sbm</code> to be picked up by component scan and gets executed after scanning
-the project but before parsing resources into an AST.
-If one of the preconditions fails (<code>ResultState.WARN</code> or <code>ResultState.FAILED</code>), the scan is interrupted and a message is
-shown to the user.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_implement_actions">Implement Actions</h3>
-<div class="paragraph">
-<p>First step on your journey to implement a new recipe will be the implementation of an <code>Action</code>.
-Every Action that needs access to the ProjectContext to modify resources should extend <code>AbstractAction</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">class MyAction extends AbstractAction {
-    void apply(ProjectContext context) {
-        // analyse and modify AST
-    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Use <a href="#TestProjectContext">[TestProjectContext]</a> to test your Action.</p>
-</div>
-<div class="sect3">
-<h4 id="_display_progress">Display Progress</h4>
-<div class="paragraph">
-<p>A long running action can leave the user without any information about the progress of the migration.</p>
-</div>
-<div class="paragraph">
-<p>The <code>Action</code> interface defines methods to display progress information to the user.
-There are two types of rendered information, process and log messages.</p>
-</div>
-<div class="sect4">
-<h5 id="_process">Process</h5>
-<div class="paragraph">
-<p><code>startStep(String)</code> starts a new sub routine.</p>
-</div>
-<div class="paragraph">
-<p><code>stopStep()</code> stops the last sub routine</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_log_messages">Log Messages</h5>
-<div class="paragraph">
-<p><code>logEvent(String)</code> logs a message inside a routine</p>
-</div>
-<div class="paragraph">
-<p>When an action starts, a first process (the action) is automatically started.
-It begins with the action and ends with success or error.
-If no other progress change is reported during the execution of the action, a loader is rendered during the</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">.    My Action
-..   My Action
-[..] My Action
-    .    Sub Routine
-    ..   Sub Routine
-    [ok] Sub Routine
-[ok] My Action</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_creating_recipes">Creating Recipes</h3>
-<div class="paragraph">
-<p>Recipes bundle a set of Actions for a migration.
-They can be declared programmatically as Spring beans or declarative using yaml syntax.
-The main difference is that yaml recipes can be provided to SBM without code changes on startup allowing to add new,
-declarative recipes without recompilation while the bean definition is arguably easier to use.</p>
-</div>
-<div class="sect3">
-<h4 id="_declarative_recipes">Declarative recipes</h4>
-<div class="paragraph">
-<p>Declarative recipes must be placed under <code>src/main`resources/recipes</code>.<br>
-See <a href="{repo}/blob/main/components/sbm-support-boot/src/main/resources/recipes/initialize-spring-boot-migration.yaml" target="_blank" rel="noopener">initialize-spring-boot-migration.yaml</a> for a recipe in YAML syntax</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_recipe_beans">Recipe beans</h4>
-<div class="paragraph">
-<p>A recipe can be defined as Spring bean using @Bean annotated method, see <a href="{repo}/blob/main/components/sbm-recipes-mule-to-boot/src/main/java/org/springframework/sbm/mule/MigrateMuleToBoot.java" target="_blank" rel="noopener">MigrateMuleToBoot.java</a> for a recipe declared as Spring bean.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-Remember to provide a description to all Actions to display the description to the user when the Action is applied.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_create_a_condition">Create a Condition</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_buildfile_and_dependencies">BuildFile and Dependencies</h3>
-<div class="sect3">
-<h4 id="_adding_a_dependency">Adding a Dependency</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_removing_a_dependency">Removing a Dependency</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_adding_dependency_exclusion">Adding Dependency Exclusion</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_migrating_java_code">Migrating Java Code</h3>
-<div class="sect3">
-<h4 id="_access_all_javasources">Access all JavaSources</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_adding_annotations">Adding annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_removing_annotations">Removing annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_modifying_annotations">Modifying annotations</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_migrating_methods">Migrating Methods</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_add_a_new_javasource">Add a new JavaSource</h4>
-<div class="paragraph">
-<p>A new <code>JavaSource</code> must be added to a <code>JavaSourceSet</code> of a given <code>ApplicationModule</code>.
-The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) and 'test' (<code>src/test/java</code>).</p>
-</div>
-<div class="paragraph">
-<p>Example: Adding a new Java class to the 'main' source set of an <code>ApplicationModule</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public void apply(ProjectContext context) {
-
-    ApplicationModule targetModule = ... // retrieve target module
-
-    String javaCode =
-        "package com.example.foo;\n" +
-        "public class Bar {}";
-
-    Path projectRootDirectory = context.getProjectRootDirectory();
-
-    targetModule.getMainJavaSourceSet().addJavaSource(projectRootDirectory, sourceFolder, src, packageName);
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_openrewrite_recipe_and_visitor">OpenRewrite Recipe and Visitor</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_use_freemarker_templates">Use Freemarker templates</h3>
-<div class="paragraph">
-<p>Add this snippet to your Action to use freemarker</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyAction extends AbstractAction {
-
-    @Autowired
-    @JsonIgnore
-    @Setter
-    private Configuration configuration;
-
-    // ...
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>and place your template under <code>src/main/resources/templates</code></p>
-</div>
-<div class="paragraph">
-<p>Example: using Freemarker template in Action</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Map&lt;String, String&gt; params = new HashMap&lt;&gt;();
-params.put("groupId", "com.example.change");
-params.put("artifactId", projectName);
-params.put("version", "0.1.0-SNAPSHOT");
-
-StringWriter writer = new StringWriter();
-try {
-    Template template = configuration.getTemplate("minimal-pom-xml.ftl");
-    template.process(params, writer);
-} catch (TemplateException | IOException e) {
-    throw new RuntimeException(e);
-}
-String src = writer.toString();</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_migrate_multi_module_projects">Migrate Multi Module Projects</h3>
-<div class="sect3">
-<h4 id="_access_a_modules_javasources">Access a Module&#8217;s JavaSources</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="Specialized_Resources">Specialized Resources</h3>
-<div class="sect3">
-<h4 id="_create_a_finder_to_access_other_resources">Create a Finder to access other resources</h4>
-<div class="paragraph">
-<p>The <code>ProjectContext</code> only offers direct access to Java and BuildFile resources.
-To access other resources the concept of <code>Finder</code>s exists.
-A <code>Finder</code> implements the <code>ResourceFinder</code> interface.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public interface ProjectResourceFinder&lt;T&gt; {
-    T apply(ProjectResourceSet projectResourceSet);
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>These <code>Finder</code>s can than be provided to the <code>search(&#8230;&#8203;)</code> method of <code>ProjectContext</code>.
-The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code> to the <code>Finder</code> and the <code>Finder</code> can then filter/search</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_manipulate_spring_boot_properties">Manipulate Spring Boot properties</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_create_a_specialized_resource">Create a specialized Resource</h4>
-
-</div>
+<p>You can configure license headers under <code>IntelliJ IDEA/Copyright/Copyright Profile</code>.
+See <a href="https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles" class="bare">https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles</a></p>
 </div>
 </div>
 </div>
