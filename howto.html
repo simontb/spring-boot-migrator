@@ -568,13 +568,100 @@ Remember to provide a description to all Actions to display the description to t
 </div>
 <div class="sect2">
 <h3 id="_create_a_condition">Create a Condition</h3>
+<div class="paragraph">
+<p>Every <code>Action</code> and every <code>Recipe</code> must have a <code>Condition</code> which defines if the <code>Recipe</code> or <code>Action</code> is applicable.
+Therefore the <code>Condition</code> interface must be implemented which defines a <code>evaluate(ProjectContext)</code> method which must return true if the Recipe or Action is applicable and false otherwise.
+A condition should only read from the <code>ProjectContext</code> and never modify the AST.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyCondition implements Condition {
+    @Override
+    public boolean evaluate(ProjectContext context) {
+        // analyze ProjectContext to evaluate condition
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_single_and_multi_module_projects">Single and Multi module projects</h3>
+<div class="paragraph">
+<p>Projects can come as single module or multi-module project.
+Working with single module projects is significantly easier because only one <code>BuildFile</code> exists.
+With multi-module projects the application modules play a central role and there must be means to
+select a module.</p>
+</div>
+<div class="sect3">
+<h4 id="_application_modules">Application Modules</h4>
+<div class="paragraph">
+<p>A common multi-module project has a root modules which consists of one or more child modules which again can consist of multiple child modules and so on.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The root module</p>
+</li>
+<li>
+<p>The application module(s), bundle all modules of an application and define the composition of deployable artifact buulding a runnable application, e.g. a war module</p>
+</li>
+<li>
+<p>The component module(s), define reusable components which are not deployable in isolation</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void apply(ProjectContext context) {
+    // Retrieve ApplicationModules
+    // TODO: Maybe ProjectModules ?
+    Modules modules = context.getModules();
 
+    // TODO: is this sufficient --&gt; must all child modules share same groupId?
+    Module module = modules.getModule("module-artifact-id");
+
+    boolean isMultiModule = modules.isMultiModuleProject();
+    Module root = modules.getRootModule(); // type="pom" or type="ear"
+    modules.getApplicationModules(); // type="war", containing "main" method
+    modules.getComponentModules(); // type="jar" without main method
+
+    List&lt;Module&gt; parentModules = module.getParentModules();
+    List&lt;Module&gt; subModules = module.getSubModules();
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_buildfile_and_dependencies">BuildFile and Dependencies</h3>
+<div class="paragraph">
+<p>The buildfiles of the scanned project are represented by <code>BuildFile</code>.
+The <code>BuildFile</code> API offers methods to read and modify the buildfile.
+<code>BuildFile</code>s can be retrieved through the <code>ProjectContext</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    // Retrieve the root build file
+    BuildFile rootBuildFile = projectContext.getBuildFile();</code></pre>
+</div>
+</div>
 <div class="sect3">
 <h4 id="_adding_a_dependency">Adding a Dependency</h4>
-
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void apply(ProjectContext context) {
+    // ...get buildFile for module
+    BuildFile buildFile = context...
+    Dependency dependency = Dependency.builder()
+                                .groupId("...")
+                                .artifactId("...")
+                                .version("...")
+                                .scope("test")
+                                .build();
+    buildFile.addDependency(dependency);
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_removing_a_dependency">Removing a Dependency</h4>
@@ -722,7 +809,7 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-24 06:35:10 UTC
+Last updated 2022-05-25 11:14:17 UTC
 </div>
 </div>
 </body>

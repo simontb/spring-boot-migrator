@@ -485,35 +485,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_create_a_condition">4.4. Create a Condition</a></li>
-<li><a href="#_buildfile_and_dependencies">4.5. BuildFile and Dependencies</a>
+<li><a href="#_single_and_multi_module_projects">4.5. Single and Multi module projects</a>
 <ul class="sectlevel3">
-<li><a href="#_adding_a_dependency">4.5.1. Adding a Dependency</a></li>
-<li><a href="#_removing_a_dependency">4.5.2. Removing a Dependency</a></li>
-<li><a href="#_adding_dependency_exclusion">4.5.3. Adding Dependency Exclusion</a></li>
+<li><a href="#_application_modules">4.5.1. Application Modules</a></li>
 </ul>
 </li>
-<li><a href="#_migrating_java_code">4.6. Migrating Java Code</a>
+<li><a href="#_buildfile_and_dependencies">4.6. BuildFile and Dependencies</a>
 <ul class="sectlevel3">
-<li><a href="#_access_all_javasources">4.6.1. Access all JavaSources</a></li>
-<li><a href="#_adding_annotations">4.6.2. Adding annotations</a></li>
-<li><a href="#_removing_annotations">4.6.3. Removing annotations</a></li>
-<li><a href="#_modifying_annotations">4.6.4. Modifying annotations</a></li>
-<li><a href="#_migrating_methods">4.6.5. Migrating Methods</a></li>
-<li><a href="#_add_a_new_javasource">4.6.6. Add a new JavaSource</a></li>
+<li><a href="#_adding_a_dependency">4.6.1. Adding a Dependency</a></li>
+<li><a href="#_removing_a_dependency">4.6.2. Removing a Dependency</a></li>
+<li><a href="#_adding_dependency_exclusion">4.6.3. Adding Dependency Exclusion</a></li>
 </ul>
 </li>
-<li><a href="#_openrewrite_recipe_and_visitor">4.7. OpenRewrite Recipe and Visitor</a></li>
-<li><a href="#_use_freemarker_templates">4.8. Use Freemarker templates</a></li>
-<li><a href="#_migrate_multi_module_projects">4.9. Migrate Multi Module Projects</a>
+<li><a href="#_migrating_java_code">4.7. Migrating Java Code</a>
 <ul class="sectlevel3">
-<li><a href="#_access_a_modules_javasources">4.9.1. Access a Module&#8217;s JavaSources</a></li>
+<li><a href="#_access_all_javasources">4.7.1. Access all JavaSources</a></li>
+<li><a href="#_adding_annotations">4.7.2. Adding annotations</a></li>
+<li><a href="#_removing_annotations">4.7.3. Removing annotations</a></li>
+<li><a href="#_modifying_annotations">4.7.4. Modifying annotations</a></li>
+<li><a href="#_migrating_methods">4.7.5. Migrating Methods</a></li>
+<li><a href="#_add_a_new_javasource">4.7.6. Add a new JavaSource</a></li>
 </ul>
 </li>
-<li><a href="#Specialized_Resources">4.10. Specialized Resources</a>
+<li><a href="#_openrewrite_recipe_and_visitor">4.8. OpenRewrite Recipe and Visitor</a></li>
+<li><a href="#_use_freemarker_templates">4.9. Use Freemarker templates</a></li>
+<li><a href="#_migrate_multi_module_projects">4.10. Migrate Multi Module Projects</a>
 <ul class="sectlevel3">
-<li><a href="#_create_a_finder_to_access_other_resources">4.10.1. Create a Finder to access other resources</a></li>
-<li><a href="#_manipulate_spring_boot_properties">4.10.2. Manipulate Spring Boot properties</a></li>
-<li><a href="#_create_a_specialized_resource">4.10.3. Create a specialized Resource</a></li>
+<li><a href="#_access_a_modules_javasources">4.10.1. Access a Module&#8217;s JavaSources</a></li>
+</ul>
+</li>
+<li><a href="#Specialized_Resources">4.11. Specialized Resources</a>
+<ul class="sectlevel3">
+<li><a href="#_create_a_finder_to_access_other_resources">4.11.1. Create a Finder to access other resources</a></li>
+<li><a href="#_manipulate_spring_boot_properties">4.11.2. Manipulate Spring Boot properties</a></li>
+<li><a href="#_create_a_specialized_resource">4.11.3. Create a specialized Resource</a></li>
 </ul>
 </li>
 </ul>
@@ -578,6 +583,7 @@ These migrations are defined as recipes consisting of one or more actions to be 
 <td class="content">
 <strong><code>M2_HOME</code> env must be set</strong> to run integration tests!<br>
 <strong>Docker must be installed</strong> to run (some) integration tests!
+To build SBM ignoring integration tests you can run <code>mvn clean install -DskipITs</code>
 </td>
 </tr>
 </table>
@@ -753,7 +759,7 @@ The resulting list of applicable recipes is then shown to the user to select and
 <div class="sect3">
 <h4 id="_apply_recipe">3.5.2. Apply Recipe</h4>
 <div class="paragraph">
-<p>The user applies a recipe of the list of applicable recipes.</p>
+<p>The user applies a recipe from the list of applicable recipes.</p>
 </div>
 <div class="sect4">
 <h5 id="_applying_recipe_actions">Applying Recipe Actions</h5>
@@ -765,7 +771,7 @@ The resulting list of applicable recipes is then shown to the user to select and
 <div class="sect4">
 <h5 id="_verify_application_in_sync">Verify Application In Sync</h5>
 <div class="paragraph">
-<p>After applying all <code>Action</code>s of the <code>Recipe</code> he changes need to be written back to filesystem.
+<p>After applying all <code>Action</code>s of the <code>Recipe</code> the changes need to be written back to filesystem.
 When <code>sbm.gitSupportEnabled</code> is <code>true</code> SBM verifies that nothing changed in the scanned project while the recipe was applied.
 If the git hash changed or non-indexed resources are found the changes are rolled back, the project must be synced,
 re-scanned and the recipe needs to be re-applied.</p>
@@ -921,47 +927,134 @@ Remember to provide a description to all Actions to display the description to t
 </div>
 <div class="sect2">
 <h3 id="_create_a_condition">4.4. Create a Condition</h3>
-
+<div class="paragraph">
+<p>Every <code>Action</code> and every <code>Recipe</code> must have a <code>Condition</code> which defines if the <code>Recipe</code> or <code>Action</code> is applicable.
+Therefore the <code>Condition</code> interface must be implemented which defines a <code>evaluate(ProjectContext)</code> method which must return true if the Recipe or Action is applicable and false otherwise.
+A condition should only read from the <code>ProjectContext</code> and never modify the AST.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class MyCondition implements Condition {
+    @Override
+    public boolean evaluate(ProjectContext context) {
+        // analyze ProjectContext to evaluate condition
+    }
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_buildfile_and_dependencies">4.5. BuildFile and Dependencies</h3>
+<h3 id="_single_and_multi_module_projects">4.5. Single and Multi module projects</h3>
+<div class="paragraph">
+<p>Projects can come as single module or multi-module project.
+Working with single module projects is significantly easier because only one <code>BuildFile</code> exists.
+With multi-module projects the application modules play a central role and there must be means to
+select a module.</p>
+</div>
 <div class="sect3">
-<h4 id="_adding_a_dependency">4.5.1. Adding a Dependency</h4>
+<h4 id="_application_modules">4.5.1. Application Modules</h4>
+<div class="paragraph">
+<p>A common multi-module project has a root modules which consists of one or more child modules which again can consist of multiple child modules and so on.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The root module</p>
+</li>
+<li>
+<p>The application module(s), bundle all modules of an application and define the composition of deployable artifact buulding a runnable application, e.g. a war module</p>
+</li>
+<li>
+<p>The component module(s), define reusable components which are not deployable in isolation</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public void apply(ProjectContext context) {
+    // Retrieve ApplicationModules
+    // TODO: Maybe ProjectModules ?
+    Modules modules = context.getModules();
+
+    // TODO: is this sufficient --&gt; must all child modules share same groupId?
+    Module module = modules.getModule("module-artifact-id");
+
+    boolean isMultiModule = modules.isMultiModuleProject();
+    Module root = modules.getRootModule(); // type="pom" or type="ear"
+    modules.getApplicationModules(); // type="war", containing "main" method
+    modules.getComponentModules(); // type="jar" without main method
+
+    List&lt;Module&gt; parentModules = module.getParentModules();
+    List&lt;Module&gt; subModules = module.getSubModules();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_buildfile_and_dependencies">4.6. BuildFile and Dependencies</h3>
+<div class="paragraph">
+<p>The buildfiles of the scanned project are represented by <code>BuildFile</code>.
+The <code>BuildFile</code> API offers methods to read and modify the buildfile.
+<code>BuildFile</code>s can be retrieved through the <code>ProjectContext</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">    // Retrieve the root build file
+    BuildFile rootBuildFile = projectContext.getBuildFile();</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_adding_a_dependency">4.6.1. Adding a Dependency</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public void apply(ProjectContext context) {
+    // ...get buildFile for module
+    BuildFile buildFile = context...
+    Dependency dependency = Dependency.builder()
+                                .groupId("...")
+                                .artifactId("...")
+                                .version("...")
+                                .scope("test")
+                                .build();
+    buildFile.addDependency(dependency);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_removing_a_dependency">4.6.2. Removing a Dependency</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_removing_a_dependency">4.5.2. Removing a Dependency</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_adding_dependency_exclusion">4.5.3. Adding Dependency Exclusion</h4>
+<h4 id="_adding_dependency_exclusion">4.6.3. Adding Dependency Exclusion</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrating_java_code">4.6. Migrating Java Code</h3>
+<h3 id="_migrating_java_code">4.7. Migrating Java Code</h3>
 <div class="sect3">
-<h4 id="_access_all_javasources">4.6.1. Access all JavaSources</h4>
+<h4 id="_access_all_javasources">4.7.1. Access all JavaSources</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_adding_annotations">4.6.2. Adding annotations</h4>
+<h4 id="_adding_annotations">4.7.2. Adding annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_removing_annotations">4.6.3. Removing annotations</h4>
+<h4 id="_removing_annotations">4.7.3. Removing annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_modifying_annotations">4.6.4. Modifying annotations</h4>
+<h4 id="_modifying_annotations">4.7.4. Modifying annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_migrating_methods">4.6.5. Migrating Methods</h4>
+<h4 id="_migrating_methods">4.7.5. Migrating Methods</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_add_a_new_javasource">4.6.6. Add a new JavaSource</h4>
+<h4 id="_add_a_new_javasource">4.7.6. Add a new JavaSource</h4>
 <div class="paragraph">
 <p>A new <code>JavaSource</code> must be added to a <code>JavaSourceSet</code> of a given <code>ApplicationModule</code>.
 The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) and 'test' (<code>src/test/java</code>).</p>
@@ -988,11 +1081,11 @@ The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_openrewrite_recipe_and_visitor">4.7. OpenRewrite Recipe and Visitor</h3>
+<h3 id="_openrewrite_recipe_and_visitor">4.8. OpenRewrite Recipe and Visitor</h3>
 
 </div>
 <div class="sect2">
-<h3 id="_use_freemarker_templates">4.8. Use Freemarker templates</h3>
+<h3 id="_use_freemarker_templates">4.9. Use Freemarker templates</h3>
 <div class="paragraph">
 <p>Add this snippet to your Action to use freemarker</p>
 </div>
@@ -1034,16 +1127,16 @@ String src = writer.toString();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrate_multi_module_projects">4.9. Migrate Multi Module Projects</h3>
+<h3 id="_migrate_multi_module_projects">4.10. Migrate Multi Module Projects</h3>
 <div class="sect3">
-<h4 id="_access_a_modules_javasources">4.9.1. Access a Module&#8217;s JavaSources</h4>
+<h4 id="_access_a_modules_javasources">4.10.1. Access a Module&#8217;s JavaSources</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="Specialized_Resources">4.10. Specialized Resources</h3>
+<h3 id="Specialized_Resources">4.11. Specialized Resources</h3>
 <div class="sect3">
-<h4 id="_create_a_finder_to_access_other_resources">4.10.1. Create a Finder to access other resources</h4>
+<h4 id="_create_a_finder_to_access_other_resources">4.11.1. Create a Finder to access other resources</h4>
 <div class="paragraph">
 <p>The <code>ProjectContext</code> only offers direct access to Java and BuildFile resources.
 To access other resources the concept of <code>Finder</code>s exists.
@@ -1062,11 +1155,11 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_manipulate_spring_boot_properties">4.10.2. Manipulate Spring Boot properties</h4>
+<h4 id="_manipulate_spring_boot_properties">4.11.2. Manipulate Spring Boot properties</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_create_a_specialized_resource">4.10.3. Create a specialized Resource</h4>
+<h4 id="_create_a_specialized_resource">4.11.3. Create a specialized Resource</h4>
 
 </div>
 </div>
@@ -1343,7 +1436,7 @@ See <a href="https://www.jetbrains.com/help/idea/copyright.html#configure-copyri
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-24 06:35:10 UTC
+Last updated 2022-05-25 11:14:17 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
