@@ -484,41 +484,48 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_recipe_beans">4.3.2. Recipe beans</a></li>
 </ul>
 </li>
-<li><a href="#_create_a_condition">4.4. Create a Condition</a></li>
-<li><a href="#_single_and_multi_module_projects">4.5. Single and Multi module projects</a>
+<li><a href="#_using_openrewrite_recipes">4.4. Using OpenRewrite Recipes</a>
 <ul class="sectlevel3">
-<li><a href="#_application_modules">4.5.1. Application Modules</a></li>
+<li><a href="#_programmatically">4.4.1. Programmatically</a></li>
+<li><a href="#_in_sbm_yaml">4.4.2. In SBM YAML</a></li>
+<li><a href="#_in_sbm_java_code">4.4.3. In SBM Java code</a></li>
 </ul>
 </li>
-<li><a href="#_buildfile_and_dependencies">4.6. BuildFile and Dependencies</a>
+<li><a href="#_create_a_condition">4.5. Create a Condition</a></li>
+<li><a href="#_single_and_multi_module_projects">4.6. Single and Multi module projects</a>
 <ul class="sectlevel3">
-<li><a href="#_adding_a_dependency">4.6.1. Adding a Dependency</a></li>
-<li><a href="#_removing_a_dependency">4.6.2. Removing a Dependency</a></li>
-<li><a href="#_adding_dependency_exclusion">4.6.3. Adding Dependency Exclusion</a></li>
+<li><a href="#_application_modules">4.6.1. Application Modules</a></li>
 </ul>
 </li>
-<li><a href="#_migrating_java_code">4.7. Migrating Java Code</a>
+<li><a href="#_buildfile_and_dependencies">4.7. BuildFile and Dependencies</a>
 <ul class="sectlevel3">
-<li><a href="#_access_all_javasources">4.7.1. Access all JavaSources</a></li>
-<li><a href="#_adding_annotations">4.7.2. Adding annotations</a></li>
-<li><a href="#_removing_annotations">4.7.3. Removing annotations</a></li>
-<li><a href="#_modifying_annotations">4.7.4. Modifying annotations</a></li>
-<li><a href="#_migrating_methods">4.7.5. Migrating Methods</a></li>
-<li><a href="#_add_a_new_javasource">4.7.6. Add a new JavaSource</a></li>
+<li><a href="#_adding_a_dependency">4.7.1. Adding a Dependency</a></li>
+<li><a href="#_removing_a_dependency">4.7.2. Removing a Dependency</a></li>
+<li><a href="#_adding_dependency_exclusion">4.7.3. Adding Dependency Exclusion</a></li>
 </ul>
 </li>
-<li><a href="#_openrewrite_recipe_and_visitor">4.8. OpenRewrite Recipe and Visitor</a></li>
-<li><a href="#_use_freemarker_templates">4.9. Use Freemarker templates</a></li>
-<li><a href="#_migrate_multi_module_projects">4.10. Migrate Multi Module Projects</a>
+<li><a href="#_migrating_java_code">4.8. Migrating Java Code</a>
 <ul class="sectlevel3">
-<li><a href="#_access_a_modules_javasources">4.10.1. Access a Module&#8217;s JavaSources</a></li>
+<li><a href="#_access_all_javasources">4.8.1. Access all JavaSources</a></li>
+<li><a href="#_adding_annotations">4.8.2. Adding annotations</a></li>
+<li><a href="#_removing_annotations">4.8.3. Removing annotations</a></li>
+<li><a href="#_modifying_annotations">4.8.4. Modifying annotations</a></li>
+<li><a href="#_migrating_methods">4.8.5. Migrating Methods</a></li>
+<li><a href="#_add_a_new_javasource">4.8.6. Add a new JavaSource</a></li>
 </ul>
 </li>
-<li><a href="#Specialized_Resources">4.11. Specialized Resources</a>
+<li><a href="#_openrewrite_recipe_and_visitor">4.9. OpenRewrite Recipe and Visitor</a></li>
+<li><a href="#_use_freemarker_templates">4.10. Use Freemarker templates</a></li>
+<li><a href="#_migrate_multi_module_projects">4.11. Migrate Multi Module Projects</a>
 <ul class="sectlevel3">
-<li><a href="#_create_a_finder_to_access_other_resources">4.11.1. Create a Finder to access other resources</a></li>
-<li><a href="#_manipulate_spring_boot_properties">4.11.2. Manipulate Spring Boot properties</a></li>
-<li><a href="#_create_a_specialized_resource">4.11.3. Create a specialized Resource</a></li>
+<li><a href="#_access_a_modules_javasources">4.11.1. Access a Module&#8217;s JavaSources</a></li>
+</ul>
+</li>
+<li><a href="#Specialized_Resources">4.12. Specialized Resources</a>
+<ul class="sectlevel3">
+<li><a href="#_create_a_finder_to_access_other_resources">4.12.1. Create a Finder to access other resources</a></li>
+<li><a href="#_manipulate_spring_boot_properties">4.12.2. Manipulate Spring Boot properties</a></li>
+<li><a href="#_create_a_specialized_resource">4.12.3. Create a specialized Resource</a></li>
 </ul>
 </li>
 </ul>
@@ -926,7 +933,129 @@ Remember to provide a description to all Actions to display the description to t
 </div>
 </div>
 <div class="sect2">
-<h3 id="_create_a_condition">4.4. Create a Condition</h3>
+<h3 id="_using_openrewrite_recipes">4.4. Using OpenRewrite Recipes</h3>
+<div class="sect3">
+<h4 id="_programmatically">4.4.1. Programmatically</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">ProjectContext context = ...
+String annotationPattern = "@java.lang.Deprecated";
+org.openrewrite.java.RemoveAnnotation rewriteRecipe = new RemoveAnnotation(annotationPattern);
+context.getProjectJavaSources().apply(rewriteRecipe);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_in_sbm_yaml">4.4.2. In SBM YAML</h4>
+<div class="sect4">
+<h5 id="_using_declarative_openrewrite_yaml">Using Declarative OpenRewrite YAML</h5>
+<div class="paragraph">
+<p>Use <code>org.springframework.sbm.engine.recipe.OpenRewriteDeclarativeRecipeAdapter</code> to use embedded OpenRewrite YAML syntax in SBM YAML to run a declarative OpenRewrite recipe as SBM action.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- name: test-recipe
+  description: "Remove @Deprecated annotations"
+  condition:
+    type: org.springframework.sbm.common.migration.conditions.TrueCondition
+  actions:
+    - type: org.springframework.sbm.engine.recipe.OpenRewriteDeclarativeRecipeAdapter
+      description: "Use a OpenRewrite recipe to remove @Deprecated annotations"
+      openRewriteRecipe: |-
+        type: specs.openrewrite.org/v1beta/recipe
+        name: org.openrewrite.java.RemoveAnnotation
+        displayName: "Remove @Deprecated annotation"
+        description: "Remove @Deprecated annotation"
+        recipeList:
+          - org.openrewrite.java.RemoveAnnotation:
+              annotationPattern: "@java.lang.Deprecated"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_by_name">By Name</h5>
+<div class="paragraph">
+<p>Use <code>org.springframework.sbm.engine.recipe.OpenRewriteNamedRecipeAdapter</code> to run an OpenRewrite recipe by name as SBM action.
+Here an OpenRewrite recipe with name <code>org.springframework.sbm.dummy.RemoveDeprecatedAnnotation</code> must exist on the classpath and will be executed as action in <code>test-recipe</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">- name: test-recipe
+  description: "Remove @Deprecated annotations"
+  condition:
+    type: org.springframework.sbm.common.migration.conditions.TrueCondition
+  actions:
+    - type: org.springframework.sbm.engine.recipe.OpenRewriteNamedRecipeAdapter
+      description: "Call a OpenRewrite recipe to remove @Deprecated annotations"
+      openRewriteRecipeName: org.springframework.sbm.dummy.RemoveDeprecatedAnnotation</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_in_sbm_java_code">4.4.3. In SBM Java code</h4>
+<div class="sect4">
+<h5 id="_using_declarative_openrewrite_yaml_2">Using Declarative OpenRewrite YAML</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class SomeRecipe {
+
+    @Bean
+    Recipe someRecipe(RewriteRecipeLoader rewriteRecipeLoader, RewriteMigrationResultMerger resultMerger) {
+        return Recipe.builder()
+                ...
+                .action(
+                        OpenRewriteDeclarativeRecipeAdapter.builder()
+                                .rewriteRecipeLoader(rewriteRecipeLoader)
+                                .resultMerger(resultMerger)
+                                .openRewriteRecipe(
+                                    "type: specs.openrewrite.org/v1beta/recipe\n" +
+                                    "name: org.openrewrite.java.RemoveAnnotation\n" +
+                                    "displayName: \"Remove @Deprecated annotation\"\n" +
+                                    "description: \"Remove @Deprecated annotation\"\n" +
+                                    "recipeList:\n" +
+                                    "  - org.openrewrite.java.RemoveAnnotation:\n" +
+                                    "      annotationPattern: \"@java.lang.Deprecated\"\n"
+                                )
+                                .build())
+                ...
+                .build();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_by_name_2">By Name</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">@Configuration
+public class SomeRecipe {
+
+    @Bean
+    Recipe someRecipe(RewriteRecipeLoader rewriteRecipeLoader, RewriteMigrationResultMerger resultMerger) {
+        return Recipe.builder()
+                ...
+                .action(
+                        OpenRewriteNamedRecipeAdapter.builder()
+                                .rewriteRecipeLoader(rewriteRecipeLoader)
+                                .resultMerger(resultMerger)
+                                .openRewriteRecipeName(
+                                    "org.springframework.sbm.dummy.RemoveDeprecatedAnnotation"
+                                )
+                                .build())
+                ...
+                .build();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_a_condition">4.5. Create a Condition</h3>
 <div class="paragraph">
 <p>Every <code>Action</code> and every <code>Recipe</code> must have a <code>Condition</code> which defines if the <code>Recipe</code> or <code>Action</code> is applicable.
 Therefore the <code>Condition</code> interface must be implemented which defines a <code>evaluate(ProjectContext)</code> method which must return true if the Recipe or Action is applicable and false otherwise.
@@ -944,7 +1073,7 @@ A condition should only read from the <code>ProjectContext</code> and never modi
 </div>
 </div>
 <div class="sect2">
-<h3 id="_single_and_multi_module_projects">4.5. Single and Multi module projects</h3>
+<h3 id="_single_and_multi_module_projects">4.6. Single and Multi module projects</h3>
 <div class="paragraph">
 <p>Projects can come as single module or multi-module project.
 Working with single module projects is significantly easier because only one <code>BuildFile</code> exists.
@@ -952,7 +1081,7 @@ With multi-module projects the application modules play a central role and there
 select a module.</p>
 </div>
 <div class="sect3">
-<h4 id="_application_modules">4.5.1. Application Modules</h4>
+<h4 id="_application_modules">4.6.1. Application Modules</h4>
 <div class="paragraph">
 <p>A common multi-module project has a root modules which consists of one or more child modules which again can consist of multiple child modules and so on.</p>
 </div>
@@ -992,7 +1121,7 @@ select a module.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_buildfile_and_dependencies">4.6. BuildFile and Dependencies</h3>
+<h3 id="_buildfile_and_dependencies">4.7. BuildFile and Dependencies</h3>
 <div class="paragraph">
 <p>The buildfiles of the scanned project are represented by <code>BuildFile</code>.
 The <code>BuildFile</code> API offers methods to read and modify the buildfile.
@@ -1005,7 +1134,7 @@ The <code>BuildFile</code> API offers methods to read and modify the buildfile.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_adding_a_dependency">4.6.1. Adding a Dependency</h4>
+<h4 id="_adding_a_dependency">4.7.1. Adding a Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public void apply(ProjectContext context) {
@@ -1023,38 +1152,38 @@ The <code>BuildFile</code> API offers methods to read and modify the buildfile.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_removing_a_dependency">4.6.2. Removing a Dependency</h4>
+<h4 id="_removing_a_dependency">4.7.2. Removing a Dependency</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_adding_dependency_exclusion">4.6.3. Adding Dependency Exclusion</h4>
+<h4 id="_adding_dependency_exclusion">4.7.3. Adding Dependency Exclusion</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrating_java_code">4.7. Migrating Java Code</h3>
+<h3 id="_migrating_java_code">4.8. Migrating Java Code</h3>
 <div class="sect3">
-<h4 id="_access_all_javasources">4.7.1. Access all JavaSources</h4>
+<h4 id="_access_all_javasources">4.8.1. Access all JavaSources</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_adding_annotations">4.7.2. Adding annotations</h4>
+<h4 id="_adding_annotations">4.8.2. Adding annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_removing_annotations">4.7.3. Removing annotations</h4>
+<h4 id="_removing_annotations">4.8.3. Removing annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_modifying_annotations">4.7.4. Modifying annotations</h4>
+<h4 id="_modifying_annotations">4.8.4. Modifying annotations</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_migrating_methods">4.7.5. Migrating Methods</h4>
+<h4 id="_migrating_methods">4.8.5. Migrating Methods</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_add_a_new_javasource">4.7.6. Add a new JavaSource</h4>
+<h4 id="_add_a_new_javasource">4.8.6. Add a new JavaSource</h4>
 <div class="paragraph">
 <p>A new <code>JavaSource</code> must be added to a <code>JavaSourceSet</code> of a given <code>ApplicationModule</code>.
 The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) and 'test' (<code>src/test/java</code>).</p>
@@ -1081,11 +1210,11 @@ The default <code>JavaSourceSet</code>s are 'main' (<code>src/main/java</code>) 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_openrewrite_recipe_and_visitor">4.8. OpenRewrite Recipe and Visitor</h3>
+<h3 id="_openrewrite_recipe_and_visitor">4.9. OpenRewrite Recipe and Visitor</h3>
 
 </div>
 <div class="sect2">
-<h3 id="_use_freemarker_templates">4.9. Use Freemarker templates</h3>
+<h3 id="_use_freemarker_templates">4.10. Use Freemarker templates</h3>
 <div class="paragraph">
 <p>Add this snippet to your Action to use freemarker</p>
 </div>
@@ -1127,16 +1256,16 @@ String src = writer.toString();</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_migrate_multi_module_projects">4.10. Migrate Multi Module Projects</h3>
+<h3 id="_migrate_multi_module_projects">4.11. Migrate Multi Module Projects</h3>
 <div class="sect3">
-<h4 id="_access_a_modules_javasources">4.10.1. Access a Module&#8217;s JavaSources</h4>
+<h4 id="_access_a_modules_javasources">4.11.1. Access a Module&#8217;s JavaSources</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="Specialized_Resources">4.11. Specialized Resources</h3>
+<h3 id="Specialized_Resources">4.12. Specialized Resources</h3>
 <div class="sect3">
-<h4 id="_create_a_finder_to_access_other_resources">4.11.1. Create a Finder to access other resources</h4>
+<h4 id="_create_a_finder_to_access_other_resources">4.12.1. Create a Finder to access other resources</h4>
 <div class="paragraph">
 <p>The <code>ProjectContext</code> only offers direct access to Java and BuildFile resources.
 To access other resources the concept of <code>Finder</code>s exists.
@@ -1155,11 +1284,11 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_manipulate_spring_boot_properties">4.11.2. Manipulate Spring Boot properties</h4>
+<h4 id="_manipulate_spring_boot_properties">4.12.2. Manipulate Spring Boot properties</h4>
 
 </div>
 <div class="sect3">
-<h4 id="_create_a_specialized_resource">4.11.3. Create a specialized Resource</h4>
+<h4 id="_create_a_specialized_resource">4.12.3. Create a specialized Resource</h4>
 
 </div>
 </div>
@@ -1436,7 +1565,7 @@ See <a href="https://www.jetbrains.com/help/idea/copyright.html#configure-copyri
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-12 11:07:04 UTC
+Last updated 2022-07-12 14:11:12 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
