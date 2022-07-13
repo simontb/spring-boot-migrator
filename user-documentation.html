@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Contributing</title>
+<title>User Documentation</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,48 +436,227 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
+<h1>User Documentation</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_getting_started">Getting started</a>
+<ul class="sectlevel2">
+<li><a href="#_start_the_application">Start the application</a></li>
+<li><a href="#_get_help">Get Help</a></li>
+<li><a href="#_list_available_recipes">List available Recipes</a></li>
+<li><a href="#_scan_application">Scan Application</a></li>
+<li><a href="#_apply_recipe">Apply Recipe</a></li>
+<li><a href="#_run_a_batch_of_recipes">Run a batch of recipes</a></li>
+</ul>
+</li>
+<li><a href="#_report_bugs_and_problems">Report Bugs and Problems</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_contributing">Contributing</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>You want to contribute to the Spring Boot Migrator project?</p>
+<p>Spring Boot Migrator aims to automatically migrate existing applications to Spring Boot.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Spring Boot Migrator (SBM) scans and analyses a given codebase and offers a list of applicable recipes.<br>
+An engineer can now apply these recipes against the codebase and step-by-step migrate it to a Spring Boot application.<br>
+See <a href="#available-recipes">Available Recipes</a></p>
 </div>
 <div class="paragraph">
-<p>Great! All contributions are welcome.</p>
+<p>Nothing&#8217;s perfect&#8230;&#8203; there are situations where manual interaction is required or architectural decisions must be made.<br>
+Here SBM adds comments at relevant locations in code with further guidance for the engineer.<br>
+See <a href="#search-and-comment">Search and Comment</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Download the latest release from <a href="https://github.com/pivotal/spring-boot-migrator/releases">GitHub Releases</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites">Prerequisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The application to be migrated must meet these requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Must ba a Maven project</p>
+</li>
+<li>
+<p>Must follow Maven dir layout</p>
+</li>
+<li>
+<p>Should have Git (be in a repo)</p>
+</li>
+<li>
+<p>No Maven reactor support (only one pom.xml!)</p>
+</li>
+<li>
+<p>Recent build with <code>mvn clean package</code> and target dir still exists</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>If you have not previously done so, please sign the <a href="https://cla.pivotal.io/sign/spring">Contributor License Agreement</a>. You will be reminded automatically when you submit the pull request.</p>
+<p>Your System must meet these requirements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Java version 11+</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">Getting started</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_start_the_application">Start the application</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Open a terminal in the directory where you downloaded <code>spring-boot-migrator.jar</code> to.</p>
+</li>
+<li>
+<p>Start the application with <code>java -jar spring-boot-migrator.jar</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_help">Get Help</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Type <code>help</code> and press <code>Enter</code> to get information about the available commands.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_list_available_recipes">List available Recipes</h3>
+<div class="paragraph">
+<p>When the shell application started</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Type <code>list</code> or just <code>l</code> and press <code>Enter</code> to get the <strong>list of available recipes</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scan_application">Scan Application</h3>
+<div class="paragraph">
+<p>Before recipes can be applied the target application must be scanned.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Type <code>scan &lt;path-to-target-application&gt;</code> and press <code>Enter</code>.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Please also see <a href="../../CONTRIBUTING.adoc">CONTRIBUTING.adoc</a> for further information.</p>
+<p>Now the sources of the target application get scanned.
+Depending on the size of the project this can take a while.
+The conditions for all recipes are checked against the scanned source code and the <strong>list of applicable recipes</strong> is shown.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_apply_recipe">Apply Recipe</h3>
+<div class="paragraph">
+<p>To apply a recipe on the target application a recipe shown in the list of applicable recipes must be selected by name.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Type <code>apply &lt;recipe-name&gt;</code> and press <code>Enter</code> to apply a recipe.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>All files need to have a license header. Please use this copyright text:</p>
+<p>The recipe is applied to the target application and changes are committed by sbm.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+If resources are added, removed, changed or committed while SBM is running you must scan the target application again.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_run_a_batch_of_recipes">Run a batch of recipes</h3>
+<div class="paragraph">
+<p>A list of recipes to apply can be provided as file on startup.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a file <code>recipes.txt</code> which contains all commands:<br></p>
+</li>
+</ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-text" data-lang="text">Copyright 2022 the original author or authors.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-     https://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.</code></pre>
+<pre>scan &lt;application-to-scan&gt;
+apply recipe1
+apply recipe2
+exit</pre>
 </div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Run <code>java -jar spring-boot-migrator.jar @recipes.txt</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>You can configure license headers under <code>IntelliJ IDEA/Copyright/Copyright Profile</code>.
-See <a href="https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles" class="bare">https://www.jetbrains.com/help/idea/copyright.html#configure-copyright-profiles</a></p>
+<p>The dir <code>&lt;application-to-scan&gt;</code> is scanned, recipe 1 and 2 applied and SBM exits.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_report_bugs_and_problems">Report Bugs and Problems</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We need your help to improve.<br>
+If you experience any issues, please let us know.</p>
+</div>
+<div class="paragraph">
+<p>Thanks. ❤️</p>
+</div>
+<div class="paragraph">
+<p><strong>Add a *Add a <a href="https://github.com/spring-projects-experimental/spring-boot-migrator/issues/new?template=bug_report.md">GitHub issue</a>.</strong></p>
 </div>
 </div>
 </div>
