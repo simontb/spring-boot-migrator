@@ -42,6 +42,9 @@ public class OpenRewriteDeclarativeRecipeAdapter extends AbstractAction {
     @Getter
     private String openRewriteRecipe;
 
+    @Autowired
+    @JsonIgnore
+    private RewriteRecipeLoader rewriteRecipeLoader;
     @JsonIgnore
     @Autowired
     private OpenRewriteRecipeRunner openRewriteRecipeRunner;
@@ -53,32 +56,7 @@ public class OpenRewriteDeclarativeRecipeAdapter extends AbstractAction {
 
     @Override
     public void apply(ProjectContext context) {
-        ByteArrayInputStream yamlInput = new ByteArrayInputStream(openRewriteRecipe.getBytes(StandardCharsets.UTF_8));
-        URI source = URI.create("embedded-recipe");
-        YamlResourceLoader yamlResourceLoader = new YamlResourceLoader(yamlInput, source, new Properties());
-        Collection<Recipe> rewriteYamlRecipe = yamlResourceLoader.listRecipes();
-
-        rewriteYamlRecipe.stream()
-                .filter(DeclarativeRecipe.class::isInstance)
-                .map(DeclarativeRecipe.class::cast)
-                .forEach(this::initializeRecipe);
-
-        if(rewriteYamlRecipe.size() != 1) {
-            throw new RuntimeException(String.format("Ambiguous number of recipes found. Expected exactly one, found %s", rewriteYamlRecipe.size()));
-        }
-        Recipe recipe = rewriteYamlRecipe.iterator().next();
+        Recipe recipe = rewriteRecipeLoader.createRecipe(openRewriteRecipe);
         openRewriteRecipeRunner.run(context, recipe);
-    }
-
-    private void initializeRecipe(DeclarativeRecipe recipe) {
-        Method initialize = ReflectionUtils.findMethod(DeclarativeRecipe.class, "initialize", Collection.class);
-        ReflectionUtils.makeAccessible(initialize);
-        try {
-            initialize.invoke(recipe, List.of(recipe));
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
