@@ -735,13 +735,8 @@ select a module.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">public void apply(ProjectContext context) {
-    // Retrieve ApplicationModules
-    // TODO: Maybe ProjectModules ?
     Modules modules = context.getModules();
-
-    // TODO: is this sufficient --&gt; must all child modules share same groupId?
-    Module module = modules.getModule("module-artifact-id");
-
+    Module module = modules.getModule("path/of/module");
     boolean isMultiModule = modules.isMultiModuleProject();
     Module root = modules.getRootModule(); // type="pom" or type="ear"
     modules.getApplicationModules(); // type="war", containing "main" method
@@ -750,6 +745,27 @@ select a module.</p>
     List&lt;Module&gt; parentModules = module.getParentModules();
     List&lt;Module&gt; subModules = module.getSubModules();
 }</code></pre>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_finding_the_module_containing_a_resource">Finding the <code>Module</code> containing a resource</h5>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Only "Maven" <code>main</code> and <code>test</code> are used as source sets and any settings in the pom.xml or otherwise are ignored.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">ProjectResource pr = ...
+Optional&lt;Module&gt; module = context.getModules.findModuleContaining(pr.getAbsolutePath());</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -931,7 +947,7 @@ The <code>ProjectContext</code> will provide the <code>ProjectResourceSet</code>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-08-24 23:29:30 UTC
+Last updated 2022-08-24 23:49:40 UTC
 </div>
 </div>
 </body>
