@@ -631,12 +631,30 @@ re-scanned and the recipe needs to be re-applied.</p>
 <p>Since 0.9.0 SBM starts to support <a href="https://maven.apache.org/guides/mini/guide-multiple-modules.html#the-reactor">multi module applications</a>.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_spring_boot_resources">Spring Boot Resources</h3>
+<div class="sect3">
+<h4 id="_spring_restcontroller_bean">Spring RestController Bean</h4>
+<div class="paragraph">
+<p>Classes annotated with Spring <code>@RestController</code> annotation can be found using the <code>FindRestControllerBeans</code> finder.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;RestControllerBean&gt; restController = projectContext.search(new FindRestControllerBeans());
+
+List&lt;RestMethod&gt; restMethods = restController.get(0).getRestMethods();
+
+restMethods.get(0).</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-09-06 12:03:12 UTC
+Last updated 2022-09-07 22:59:11 UTC
 </div>
 </div>
 </body>
