@@ -17,7 +17,7 @@ package org.springframework.sbm.properties.api;
 
 import org.springframework.sbm.openrewrite.RewriteExecutionContext;
 import org.springframework.sbm.project.resource.RewriteSourceFileHolder;
-import org.springframework.sbm.properties.migration.recipes.AddProperty;
+import org.openrewrite.properties.AddProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.openrewrite.Recipe;
 import org.openrewrite.Result;
@@ -35,11 +35,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-// TODO: fcoi RewriteSourceFileHolder as member ?!
 @Slf4j
-public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
+public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> implements SpringBootProperties {
 
     private final RewriteExecutionContext executionContext;
 
@@ -48,6 +46,7 @@ public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
         this.executionContext = executionContext;
     }
 
+    @Override
     public void setProperty(String comment, String propertyName, String propertyValue) {
         if (FindProperties.find(getSourceFile(), propertyName, false).isEmpty()) {
             apply(new AddProperty(propertyName, propertyValue));
@@ -56,6 +55,7 @@ public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
         }
     }
 
+    @Override
     public void setProperty(String key, String value) {
         if (FindProperties.find(getSourceFile(), key, false).isEmpty()) {
             apply(new AddProperty(key, value));
@@ -64,12 +64,14 @@ public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
         }
     }
 
+    @Override
     public void renameProperty(String oldProperyName, String newPropertyName) {
         if (!FindProperties.find(getSourceFile(), oldProperyName, false).isEmpty()) {
             apply(new ChangePropertyKey(oldProperyName, newPropertyName, null, null));
         }
     }
 
+    @Override
     public Optional<String> getProperty(String key) {
         Set<Entry> found = FindProperties.find(getSourceFile(), key, false);
         if (found.isEmpty()) {
@@ -83,6 +85,7 @@ public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
 
     }
 
+    @Override
     public java.util.Properties getProperties() {
         String collect = getSourceFile().printAll();
         try {
@@ -94,7 +97,8 @@ public class PropertiesSource extends RewriteSourceFileHolder<Properties.File> {
         }
     }
 
-    private void apply(Recipe r) {
+    @Override
+    public void apply(Recipe r) {
         File rewriteResource = getSourceFile();
         List<Result> results = r.run(List.of(rewriteResource), executionContext).getResults();
         if (!results.isEmpty()) {

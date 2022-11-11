@@ -21,6 +21,7 @@ import org.openrewrite.Tree;
 import org.openrewrite.marker.Markers;
 import org.openrewrite.properties.tree.Properties.File;
 import org.springframework.sbm.openrewrite.RewriteExecutionContext;
+import org.springframework.sbm.project.resource.ProjectResource;
 import org.springframework.sbm.properties.api.PropertiesSource;
 
 import java.nio.file.Path;

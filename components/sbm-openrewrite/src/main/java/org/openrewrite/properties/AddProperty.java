@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.sbm.properties.migration.recipes;
+package org.openrewrite.properties;
 
 import lombok.EqualsAndHashCode;
 import org.openrewrite.*;

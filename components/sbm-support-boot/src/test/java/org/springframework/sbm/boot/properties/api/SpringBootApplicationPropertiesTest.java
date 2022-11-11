@@ -19,6 +19,12 @@ package org.springframework.sbm.boot.properties.api;
 import org.junit.jupiter.api.Test;
 import org.openrewrite.properties.PropertiesParser;
 import org.openrewrite.properties.tree.Properties;
+import org.springframework.sbm.boot.properties.SpringApplicationPropertiesPathMatcher;
+import org.springframework.sbm.boot.properties.SpringBootApplicationPropertiesRegistrar;
+import org.springframework.sbm.engine.context.ProjectContext;
+import org.springframework.sbm.project.resource.ProjectResource;
+import org.springframework.sbm.project.resource.RewriteSourceFileHolder;
+import org.springframework.sbm.project.resource.TestProjectContext;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -45,6 +51,18 @@ class SpringBootApplicationPropertiesTest {
         assertThat(sut.getProperty("foo").get()).isEqualTo("bar");
         assertThat(sut.getProperty("bob").get()).isEqualTo("bill");
         assertThat(sut.getProperty("jane")).isEmpty();
+    }
+
+    @Test
+    void shouldSupportYaml() {
+        ProjectContext context = TestProjectContext
+                .buildProjectContext()
+                .addRegistrar(new SpringBootApplicationPropertiesRegistrar(new SpringApplicationPropertiesPathMatcher()))
+                .addProjectResource("src/main/resources/application.yaml", "a.b: c")
+                .build();
+        RewriteSourceFileHolder r = (RewriteSourceFileHolder) context.getProjectResources().get(1);
+
+//        SpringBootApplicationProperties sut = new SpringBootApplicationProperties(TestProjectContext.getDefaultProjectRoot(), r);
     }
 
 }
