@@ -462,18 +462,17 @@ public class TestProjectContext {
             String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n" +
                     "    <modelVersion>4.0.0</modelVersion>\n" +
+                    "{{springParentPom}}" +
                     "    <groupId>com.example</groupId>\n" +
                     "    <artifactId>dummy-root</artifactId>\n" +
                     "    <version>0.1.0-SNAPSHOT</version>\n" +
                     "    <packaging>jar</packaging>\n" +
-                    "{{springParentPom}}\n" +
-                    "{{dependencies}}\n" +
+                    "{{dependencies}}" +
                     "</project>\n";
 
             xml = xml
                     .replace("{{dependencies}}", getDependenciesSection())
-                    .replace("{{springParentPom}}", getSpringParentPomSection())
-            ;
+                    .replace("{{springParentPom}}", getSpringParentPomSection());
 
             resourcesWithRelativePaths.put(Path.of("pom.xml"), xml);
 
